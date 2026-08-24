@@ -1,0 +1,31 @@
+{
+  "expo": {
+    "name": "Stockaz",
+    "slug": "stockaz",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "backgroundColor": "#F7F4EF",
+    "splash": {
+      "backgroundColor": "#F7F4EF"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "app.stockaz.mobile"
+    },
+    "android": {
+      "package": "app.stockaz.mobile",
+      "adaptiveIcon": {
+        "backgroundColor": "#F7F4EF",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    }
+  }
+}
