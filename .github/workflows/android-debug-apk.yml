@@ -35,6 +35,14 @@ jobs:
       - name: Generate native Android project
         run: npx expo prebuild --platform android --no-install
 
+      # By default the react-native-gradle-plugin treats the `debug` variant
+      # as "debuggable" and skips embedding the JS bundle + assets, so a
+      # plain debug APK expects a live Metro server (installing it standalone
+      # shows "Unable to load script"). Make it standalone by telling the
+      # plugin no variant should skip bundling.
+      - name: Bundle JS into the debug build too
+        run: sed -i '/^react {/a\    debuggableVariants = []' android/app/build.gradle
+
       - name: Build debug APK
         working-directory: android
         run: ./gradlew assembleDebug --no-daemon
