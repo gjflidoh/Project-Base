@@ -59,12 +59,13 @@ function palette(p: {
 
     // "Glass" fills — deliberately high-opacity even though they're meant to
     // sit under a blur: expo-blur doesn't reliably blur on Android, so these
-    // have to read as clean cards on their own, with any real blur (where it
-    // works) as a bonus rather than the thing carrying the effect.
-    glass50: g('.80'), glass55: g('.82'), glass56: g('.83'), glass58: g('.84'),
-    glass6: g('.86'), glass62: g('.87'), glass66: g('.89'), glass7: g('.90'),
-    glass74: g('.91'), glass78: g('.92'), glass8: g('.93'), glass85: g('.95'),
-    glass9: g('.96'), glass92: g('.97'), glass94: g('.98'),
+    // have to read as clean, fully opaque cards on their own — at this
+    // opacity any real blur (where it works) is invisible anyway, so it's
+    // simply not something these fills can lean on.
+    glass50: g('.94'), glass55: g('.95'), glass56: g('.955'), glass58: g('.96'),
+    glass6: g('.965'), glass62: g('.97'), glass66: g('.975'), glass7: g('.98'),
+    glass74: g('.982'), glass78: g('.985'), glass8: g('.99'), glass85: g('.992'),
+    glass9: g('.995'), glass92: g('.997'), glass94: g('1'),
     glassBorder: p.glassBorder,
     glassBorderStrong: p.glassBorderStrong,
     sheetSurface: p.sheetSurface,
@@ -86,7 +87,7 @@ const lightPalette = palette({
   warn: '#E08A00', warnInk: '#B96B0A', warnInkStrong: '#8A5A06', warnBg: 'rgba(224,138,0,.14)',
   ok: '#957750', okInk: '#58452B', okBg: 'rgba(149,119,80,.13)', flatInk: '#6B6055', flatBg: 'rgba(27,22,16,.06)',
   hairline: 'rgba(27,22,16,.06)', hairline2: 'rgba(27,22,16,.08)', hairlineStrong: 'rgba(27,22,16,.1)', scrim: 'rgba(22,17,11,.36)',
-  glassBase: '255,255,255', glassBorder: 'rgba(255,255,255,.95)', glassBorderStrong: 'rgba(255,255,255,.98)', sheetSurface: 'rgba(255,255,255,.95)',
+  glassBase: '255,255,255', glassBorder: 'rgba(255,255,255,.95)', glassBorderStrong: 'rgba(255,255,255,.98)', sheetSurface: 'rgba(255,255,255,.99)',
   disabledFill: 'rgba(27,22,16,.05)', mutedButton: 'rgba(27,22,16,.25)',
 });
 
@@ -97,7 +98,7 @@ const darkPalette = palette({
   warn: '#FFB347', warnInk: '#FFB347', warnInkStrong: '#FFC670', warnBg: 'rgba(255,179,71,.16)',
   ok: '#C9A36E', okInk: '#E6C99A', okBg: 'rgba(201,163,110,.16)', flatInk: '#B9AD9C', flatBg: 'rgba(245,239,227,.08)',
   hairline: 'rgba(245,239,227,.08)', hairline2: 'rgba(245,239,227,.11)', hairlineStrong: 'rgba(245,239,227,.15)', scrim: 'rgba(0,0,0,.5)',
-  glassBase: '38,32,25', glassBorder: 'rgba(245,239,227,.1)', glassBorderStrong: 'rgba(245,239,227,.16)', sheetSurface: 'rgba(30,25,19,.96)',
+  glassBase: '38,32,25', glassBorder: 'rgba(245,239,227,.1)', glassBorderStrong: 'rgba(245,239,227,.16)', sheetSurface: 'rgba(30,25,19,.99)',
   disabledFill: 'rgba(245,239,227,.06)', mutedButton: 'rgba(245,239,227,.16)',
 });
 
