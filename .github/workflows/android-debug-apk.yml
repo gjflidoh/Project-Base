@@ -53,12 +53,18 @@ jobs:
         run: |
           set -e
           mkdir -p /tmp/apk-publish
-          cp android/app/build/outputs/apk/debug/app-debug.apk /tmp/apk-publish/stockaz-debug.apk
+          # The raw debug APK is >100MB, over GitHub's git blob limit, but it
+          # zips down comfortably under that (mostly-incompressible content
+          # like native .so libs still yields ~35% smaller here) — zip it
+          # instead of pushing the raw file.
+          cd android/app/build/outputs/apk/debug
+          zip -q -9 /tmp/apk-publish/stockaz-debug.apk.zip app-debug.apk
           cd /tmp/apk-publish
+          ls -la
           git init -q -b apk-builds
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add stockaz-debug.apk
+          git add stockaz-debug.apk.zip
           git commit -q -m "Debug APK from run ${{ github.run_id }} (${{ github.sha }})"
           git remote add origin "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git"
           git push -f origin apk-builds
