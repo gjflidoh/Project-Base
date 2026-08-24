@@ -71,7 +71,7 @@ function ActiveScreen({ screen }: { screen: Screen }) {
 export function RootShell() {
   const store = useStore();
   const showNav = !NO_NAV.includes(store.screen);
-  const isDark = store.screen === 'scan';
+  const isDark = store.screen === 'scan' || store.dark;
 
   return (
     <View style={{ flex: 1 }}>

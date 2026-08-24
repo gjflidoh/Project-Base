@@ -28,7 +28,7 @@ export function ProductTile({ product, onPress, onLongPress, onRemove, compact }
         borderRadius: compact ? radius.lg - 1 : radius.xxl,
         padding: compact ? 10 : 11,
         paddingBottom: 12,
-        backgroundColor: product.outOfStock ? 'rgba(27,22,16,.04)' : highlighted ? 'rgba(149,119,80,.12)' : color.glass6,
+        backgroundColor: product.outOfStock ? color.disabledFill : highlighted ? color.accentSoft : color.glass6,
         borderWidth: 1,
         borderColor: product.outOfStock ? color.hairline2 : highlighted ? color.accentBorder : color.glassBorder,
         alignItems: 'center',
@@ -54,7 +54,7 @@ export function ProductTile({ product, onPress, onLongPress, onRemove, compact }
         disabled={product.disabled && !onLongPress}
         style={{ opacity: product.disabled ? 0.45 : 1, alignItems: 'center', gap: 8, width: '100%' }}
       >
-        <View style={{ width: '100%', aspectRatio: 1, borderRadius: radius.md + 1, backgroundColor: color.glass85, borderWidth: 1, borderColor: color.glass8, overflow: 'hidden', padding: 5 }}>
+        <View style={{ width: '100%', aspectRatio: 1, borderRadius: radius.md + 1, backgroundColor: color.productMat, borderWidth: 1, borderColor: color.glass8, overflow: 'hidden', padding: 5 }}>
           <Image source={productImage(product.img)} style={[{ width: '100%', height: '100%' }, product.outOfStock && { opacity: 0.4 }]} resizeMode="contain" />
         </View>
         <AppText numberOfLines={2} style={{ fontSize: 12.5, fontWeight: '700', color: color.ink, textAlign: 'center', lineHeight: 15 }}>{product.short}</AppText>

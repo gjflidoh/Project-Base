@@ -116,7 +116,7 @@ export function OnboardingScreen() {
                 </View>
                 <View style={{ flexDirection: 'row', gap: 7, marginTop: 13 }}>
                   {STARTER.slice(0, 6).map((p) => (
-                    <View key={p.name} style={{ flex: 1, aspectRatio: 1, borderRadius: 13, backgroundColor: color.glass85, borderWidth: 1, borderColor: color.hairline, padding: 4 }}>
+                    <View key={p.name} style={{ flex: 1, aspectRatio: 1, borderRadius: 13, backgroundColor: color.productMat, borderWidth: 1, borderColor: color.hairline, padding: 4 }}>
                       <Image source={productImage(p.img)} style={{ width: '100%', height: '100%' }} resizeMode="contain" />
                     </View>
                   ))}
@@ -152,7 +152,7 @@ export function OnboardingScreen() {
             </View>
             <GlassCard style={{ padding: 16 }}>
               <View style={{ flexDirection: 'row', alignItems: 'center', gap: 13 }}>
-                <View style={{ width: 52, height: 52, borderRadius: 17, backgroundColor: color.white, borderWidth: 1, borderColor: color.hairline2, overflow: 'hidden', padding: 4 }}>
+                <View style={{ width: 52, height: 52, borderRadius: 17, backgroundColor: color.productMat, borderWidth: 1, borderColor: color.hairline2, overflow: 'hidden', padding: 4 }}>
                   <Image source={productImage(SCAN.img)} style={{ width: '100%', height: '100%' }} resizeMode="contain" />
                 </View>
                 <View style={{ flex: 1 }}>

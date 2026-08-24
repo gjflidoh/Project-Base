@@ -36,11 +36,11 @@ export function Sheet({ visible, onClose, edge = 'bottom', children, dismissOnBa
   return (
     <Modal visible={visible} transparent animationType="fade" onRequestClose={onClose} statusBarTranslucent>
       <View style={{ flex: 1, justifyContent: justify, padding: isCenter ? 24 : 0 }}>
-        <Pressable style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(22,17,11,.36)' }} onPress={dismissOnBackdrop ? onClose : undefined} />
+        <Pressable style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: color.scrim }} onPress={dismissOnBackdrop ? onClose : undefined} />
         <View style={{ overflow: 'hidden', ...radii, ...shadow.sheet }}>
           <BlurView intensity={50} tint="light" style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }} />
           <Wrapper
-            style={{ backgroundColor: 'rgba(255,255,255,.9)' }}
+            style={{ backgroundColor: color.sheetSurface }}
             contentContainerStyle={scroll ? { paddingTop: isBottom || isCenter ? 20 : insets.top + 20, paddingBottom: isBottom ? insets.bottom + 20 : 20, paddingHorizontal: 18 } : undefined}
           >
             <View style={!scroll ? { padding: 18, paddingTop: isBottom || isCenter ? 18 : insets.top + 18, paddingBottom: isBottom ? insets.bottom + 18 : 18 } : undefined}>

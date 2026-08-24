@@ -16,7 +16,7 @@ export function RestockSheet() {
       {r && (
         <>
           <View style={{ flexDirection: 'row', alignItems: 'center', gap: 14 }}>
-            <View style={{ width: 54, height: 54, borderRadius: 18, backgroundColor: color.white, borderWidth: 1, borderColor: color.hairline2, overflow: 'hidden', padding: 5 }}>
+            <View style={{ width: 54, height: 54, borderRadius: 18, backgroundColor: color.productMat, borderWidth: 1, borderColor: color.hairline2, overflow: 'hidden', padding: 5 }}>
               <Image source={productImage(r.img)} style={{ width: '100%', height: '100%' }} resizeMode="contain" />
             </View>
             <View style={{ flex: 1 }}>

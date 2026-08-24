@@ -5,6 +5,7 @@ import { SEED_RECEIPTS, type Receipt } from '../data/receipts';
 import { CREDIT, type CreditCustomer } from '../data/credit';
 import { FORMS, FORM_MAKE, SPECIAL_FORM_KEYS } from '../data/forms';
 import type { ListKey, ListRow } from '../data/lists';
+import { setDarkMode } from '../theme/tokens';
 
 let toastTimer: ReturnType<typeof setTimeout> | null = null;
 let scanTimer: ReturnType<typeof setTimeout> | null = null;
@@ -598,7 +599,12 @@ export const useStore = create<Store>((set, get) => ({
     get().showToast(STARTER.length + ' grocery products imported');
   },
 
-  toggleDark: () => set((s) => ({ dark: !s.dark })),
+  toggleDark: () =>
+    set((s) => {
+      const next = !s.dark;
+      setDarkMode(next);
+      return { dark: next };
+    }),
   openProfile: () => set({ profile: true }),
   closeProfile: () => set({ profile: false }),
   openAlerts: () => set({ alerts: true }),

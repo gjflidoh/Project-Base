@@ -29,7 +29,7 @@ export function Row({ leading, image, title, sub, trailingTop, trailingTopColor,
   const content = (
     <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12, paddingHorizontal: 15, paddingVertical: 13, borderBottomWidth: divider ? 1 : 0, borderBottomColor: color.hairline }}>
       {image ? (
-        <View style={{ width: 42, height: 42, borderRadius: radius.sm + 1, backgroundColor: color.glass9, borderWidth: 1, borderColor: color.glass8, overflow: 'hidden', padding: 3 }}>
+        <View style={{ width: 42, height: 42, borderRadius: radius.sm + 1, backgroundColor: color.productMat, borderWidth: 1, borderColor: color.glass8, overflow: 'hidden', padding: 3 }}>
           <Image source={image} style={{ width: '100%', height: '100%' }} resizeMode="contain" />
         </View>
       ) : (

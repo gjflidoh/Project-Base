@@ -37,7 +37,7 @@ export function ReceiptsScreen() {
                   <AppText style={{ fontSize: 11.5, fontWeight: '600', color: color.faint, marginTop: 2 }}>{r.when} · {r.customer}</AppText>
                   <View style={{ flexDirection: 'row', alignItems: 'center', gap: 5, marginTop: 7 }}>
                     {r.thumbs.map((t, i) => (
-                      <View key={i} style={{ width: 26, height: 26, borderRadius: 9, backgroundColor: color.glass9, borderWidth: 1, borderColor: color.hairline, overflow: 'hidden' }}>
+                      <View key={i} style={{ width: 26, height: 26, borderRadius: 9, backgroundColor: color.productMat, borderWidth: 1, borderColor: color.hairline, overflow: 'hidden' }}>
                         <Image source={productImage(t.img)} style={{ width: '100%', height: '100%' }} resizeMode="contain" />
                       </View>
                     ))}

@@ -1,5 +1,6 @@
 import React from 'react';
 import Svg, { Path, Circle, Rect } from 'react-native-svg';
+import { color as themeColor } from '../theme/tokens';
 
 export interface IconProps {
   d?: string;
@@ -14,7 +15,10 @@ export interface IconProps {
 // Generic stroke-path icon renderer — every icon in the design is given as
 // an SVG `d` path (see data/icons.ts + per-screen GLYPH constants), drawn
 // with round joins/caps to match the source exactly.
-export function Icon({ d, paths, size = 20, color = '#1B1610', strokeWidth = 2, filled = false, viewBox = '0 0 24 24' }: IconProps) {
+//
+// Default colors read from the live theme token (not a hardcoded hex) so an
+// icon left un-colored by its caller still follows dark mode.
+export function Icon({ d, paths, size = 20, color = themeColor.ink, strokeWidth = 2, filled = false, viewBox = '0 0 24 24' }: IconProps) {
   const ds = paths ?? (d ? [d] : []);
   return (
     <Svg width={size} height={size} viewBox={viewBox} fill="none">
@@ -33,7 +37,7 @@ export function Icon({ d, paths, size = 20, color = '#1B1610', strokeWidth = 2, 
   );
 }
 
-export function IconSearch({ size = 16, color = '#9A8D7D', strokeWidth = 2.1 }: { size?: number; color?: string; strokeWidth?: number }) {
+export function IconSearch({ size = 16, color = themeColor.faint, strokeWidth = 2.1 }: { size?: number; color?: string; strokeWidth?: number }) {
   return (
     <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
       <Circle cx={11} cy={11} r={7} stroke={color} strokeWidth={strokeWidth} />
@@ -42,7 +46,7 @@ export function IconSearch({ size = 16, color = '#9A8D7D', strokeWidth = 2.1 }: 
   );
 }
 
-export function IconBell({ size = 17, color = '#1B1610', strokeWidth = 1.9 }: { size?: number; color?: string; strokeWidth?: number }) {
+export function IconBell({ size = 17, color = themeColor.ink, strokeWidth = 1.9 }: { size?: number; color?: string; strokeWidth?: number }) {
   return (
     <Icon
       size={size}
@@ -53,7 +57,7 @@ export function IconBell({ size = 17, color = '#1B1610', strokeWidth = 1.9 }: { 
   );
 }
 
-export function IconSignal({ size = 17, color = '#1B1610' }: { size?: number; color?: string }) {
+export function IconSignal({ size = 17, color = themeColor.ink }: { size?: number; color?: string }) {
   return (
     <Svg width={size} height={(size * 11) / 17} viewBox="0 0 17 11" fill={color}>
       <Rect x={0} y={7} width={3} height={4} rx={1} />
@@ -64,7 +68,7 @@ export function IconSignal({ size = 17, color = '#1B1610' }: { size?: number; co
   );
 }
 
-export function IconWifi({ size = 15, color = '#1B1610' }: { size?: number; color?: string }) {
+export function IconWifi({ size = 15, color = themeColor.ink }: { size?: number; color?: string }) {
   return (
     <Svg width={size} height={(size * 11) / 15} viewBox="0 0 15 11" fill="none">
       <Path d="M1 3.6a9 9 0 0 1 13 0M3.6 6.4a5.5 5.5 0 0 1 7.8 0" stroke={color} strokeWidth={1.6} strokeLinecap="round" />
@@ -73,7 +77,7 @@ export function IconWifi({ size = 15, color = '#1B1610' }: { size?: number; colo
   );
 }
 
-export function IconBattery({ size = 25, color = '#1B1610' }: { size?: number; color?: string }) {
+export function IconBattery({ size = 25, color = themeColor.ink }: { size?: number; color?: string }) {
   return (
     <Svg width={size} height={(size * 12) / 25} viewBox="0 0 25 12" fill="none">
       <Rect x={0.5} y={0.5} width={21} height={11} rx={3.5} stroke={color} opacity={0.45} />

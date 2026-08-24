@@ -64,7 +64,7 @@ export function ReportsScreen() {
             onPress={() => store.patch({ screen: 'stock', query: t.short })}
             style={{ flexDirection: 'row', alignItems: 'center', gap: 12, paddingHorizontal: 15, paddingVertical: 11, borderTopWidth: 1, borderTopColor: color.hairline }}
           >
-            <View style={{ width: 36, height: 36, borderRadius: 12, backgroundColor: color.glass9, borderWidth: 1, borderColor: color.hairline, overflow: 'hidden', padding: 3 }}>
+            <View style={{ width: 36, height: 36, borderRadius: 12, backgroundColor: color.productMat, borderWidth: 1, borderColor: color.hairline, overflow: 'hidden', padding: 3 }}>
               <Image source={productImage(t.img)} style={{ width: '100%', height: '100%' }} resizeMode="contain" />
             </View>
             <View style={{ flex: 1, minWidth: 0 }}>

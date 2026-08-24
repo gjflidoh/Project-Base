@@ -30,7 +30,7 @@ export function ReceiptSheet() {
               const img = receiptLineImage(store, catalog, label);
               return (
                 <View key={i} style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
-                  <View style={{ width: 28, height: 28, borderRadius: 9, backgroundColor: 'rgba(27,22,16,.03)', borderWidth: 1, borderColor: color.hairline, overflow: 'hidden', opacity: img ? 1 : 0 }}>
+                  <View style={{ width: 28, height: 28, borderRadius: 9, backgroundColor: color.productMat, borderWidth: 1, borderColor: color.hairline, overflow: 'hidden', opacity: img ? 1 : 0 }}>
                     {img && <Image source={productImage(img)} style={{ width: '100%', height: '100%' }} resizeMode="contain" />}
                   </View>
                   <AppText style={{ flex: 1, fontSize: 13.5, fontWeight: '600', color: color.ink }}>{label}</AppText>

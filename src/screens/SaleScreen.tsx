@@ -71,7 +71,7 @@ export function SaleScreen() {
             {lines.map((c) => (
               <GlassCard key={c.name} style={{ padding: 12, paddingHorizontal: 14 }}>
                 <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
-                  <View style={{ width: 42, height: 42, borderRadius: 13, backgroundColor: color.glass9, borderWidth: 1, borderColor: color.glass8, overflow: 'hidden', padding: 3 }}>
+                  <View style={{ width: 42, height: 42, borderRadius: 13, backgroundColor: color.productMat, borderWidth: 1, borderColor: color.glass8, overflow: 'hidden', padding: 3 }}>
                     <Image source={productImage(c.img)} style={{ width: '100%', height: '100%' }} resizeMode="contain" />
                   </View>
                   <View style={{ flex: 1, minWidth: 0 }}>

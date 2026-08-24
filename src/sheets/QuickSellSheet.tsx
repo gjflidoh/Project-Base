@@ -109,7 +109,7 @@ export function QuickSellSheet() {
                 <Icon paths={['M4 7h16M9 7V5h6v2M6 7l1 13h10l1-13']} size={16} color={color.sub2} strokeWidth={2} />
               </Pressable>
             )}
-            <Pressable onPress={() => store.basketCheckout()} style={{ height: 46, paddingHorizontal: 20, borderRadius: 17, backgroundColor: store.cart.length ? '#7A5F3C' : 'rgba(27,22,16,.25)', alignItems: 'center', justifyContent: 'center' }}>
+            <Pressable onPress={() => store.basketCheckout()} style={{ height: 46, paddingHorizontal: 20, borderRadius: 17, backgroundColor: store.cart.length ? '#7A5F3C' : color.mutedButton, alignItems: 'center', justifyContent: 'center' }}>
               <AppText style={{ color: color.white, fontSize: 15, fontWeight: '800' }}>Checkout</AppText>
             </Pressable>
           </View>
