@@ -73,8 +73,14 @@ export function RootShell() {
   const showNav = !NO_NAV.includes(store.screen);
   const isDark = store.screen === 'scan' || store.dark;
 
+  // Keying the whole tree on the theme forces a clean remount on toggle —
+  // `color`/`badgeTone` are reactive proxies so this isn't strictly needed
+  // for correctness, but it's a cheap guarantee against any stray
+  // memoization or stale-closure edge case leaving a screen half-themed.
+  const themeKey = store.dark ? 'dark' : 'light';
+
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1 }} key={themeKey}>
       <StatusBar style={isDark ? 'light' : 'dark'} />
       <ScreenRoot>
         <ActiveScreen screen={store.screen} />

@@ -49,6 +49,18 @@ export function AccountScreen() {
         ))}
       </GlassCard>
 
+      <GlassCard style={{ overflow: 'hidden' }}>
+        <Pressable onPress={() => store.toggleDark()} style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: 15 }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 9 }}>
+            <Icon d={GLYPH.moon} size={17} color={color.accent} strokeWidth={2} />
+            <AppText style={{ fontSize: 14, fontWeight: '700', color: color.ink }}>Dark mode</AppText>
+          </View>
+          <View style={{ width: 44, height: 26, borderRadius: 13, backgroundColor: store.dark ? '#957750' : color.hairlineStrong, padding: 3, flexDirection: 'row', justifyContent: store.dark ? 'flex-end' : 'flex-start' }}>
+            <View style={{ width: 20, height: 20, borderRadius: 10, backgroundColor: color.white }} />
+          </View>
+        </Pressable>
+      </GlassCard>
+
       <Pressable onPress={() => store.logout()} style={{ height: 50, borderRadius: radius.xl, backgroundColor: color.dangerBg, borderWidth: 1, borderColor: color.dangerBorder, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 9 }}>
         <Icon d={GLYPH.logout} size={17} color={color.dangerInkStrong} strokeWidth={2.1} />
         <AppText style={{ fontSize: 15, fontWeight: '800', color: color.dangerInkStrong }}>Log out</AppText>

@@ -8,7 +8,6 @@ import type { ListKey, ListRow } from '../data/lists';
 import { setDarkMode } from '../theme/tokens';
 
 let toastTimer: ReturnType<typeof setTimeout> | null = null;
-let scanTimer: ReturnType<typeof setTimeout> | null = null;
 
 function receiptNo(existing: Receipt[]): string {
   return '#000' + (129 + existing.length - 5);
@@ -40,6 +39,7 @@ export interface Actions {
   // scan
   openScan: () => void;
   closeScan: () => void;
+  handleBarcodeScanned: (code: string) => void;
   scanSell: () => void;
   scanAdd: () => void;
 
@@ -152,6 +152,8 @@ export const useStore = create<Store>((set, get) => ({
 
   scanning: false,
   scanFound: false,
+  scannedCode: null,
+  scannedProduct: null,
 
   payMomo: true,
   payCard: false,
@@ -262,31 +264,43 @@ export const useStore = create<Store>((set, get) => ({
   },
 
   openScan: () => {
-    set({ prevScreen: get().screen, screen: 'scan', scanning: true, scanFound: false });
-    if (scanTimer) clearTimeout(scanTimer);
-    scanTimer = setTimeout(() => set({ scanning: false, scanFound: true }), 1900);
+    set({ prevScreen: get().screen, screen: 'scan', scanning: true, scanFound: false, scannedCode: null, scannedProduct: null });
   },
   closeScan: () => {
-    if (scanTimer) clearTimeout(scanTimer);
-    set((s) => ({ screen: s.prevScreen, scanning: false, scanFound: false }));
+    set((s) => ({ screen: s.prevScreen, scanning: false, scanFound: false, scannedCode: null, scannedProduct: null }));
+  },
+  handleBarcodeScanned: (code) => {
+    // Debounce: once a code has been read for this scan session, ignore
+    // further camera frames until the sheet is reopened.
+    if (get().scanFound) return;
+    const match = get().currentCatalog().find((p) => p.barcode === code) ?? null;
+    set({ scanning: false, scanFound: true, scannedCode: code, scannedProduct: match });
   },
   scanSell: () => {
-    if (scanTimer) clearTimeout(scanTimer);
-    if (get().prevScreen === 'onb') {
+    const s = get();
+    if (s.prevScreen === 'onb') {
       set({ screen: 'onb', onbStep: 3, scanning: false, scanFound: false });
       return;
     }
-    get().add(SCAN);
-    set({ screen: 'sale', scanning: false, scanFound: false });
+    const product = s.scannedProduct ?? SCAN;
+    get().add(product);
+    set({ screen: 'sale', scanning: false, scanFound: false, scannedCode: null, scannedProduct: null });
   },
   scanAdd: () => {
-    if (scanTimer) clearTimeout(scanTimer);
-    if (get().prevScreen === 'onb') {
+    const s = get();
+    if (s.prevScreen === 'onb') {
       set({ screen: 'onb', onbStep: 3, scanning: false, scanFound: false });
       return;
     }
-    set((s) => ({ screen: s.prevScreen, scanning: false, scanFound: false }));
-    get().showToast(SCAN.short + ' — add stock quantity');
+    if (s.scannedProduct) {
+      const p = s.scannedProduct;
+      set({ screen: s.prevScreen, scanning: false, scanFound: false, scannedCode: null, scannedProduct: null, restock: { name: p.name, short: p.short, img: p.img, cat: p.cat }, restockQty: 12 });
+      return;
+    }
+    // Unrecognised barcode — hand it straight to the "new product" form
+    // instead of pretending it matched something in the catalog.
+    set({ screen: 'form', formKey: 'products', formVals: s.scannedCode ? { barcode: s.scannedCode } : {}, scanning: false, scanFound: false, scannedCode: null, scannedProduct: null });
+    get().showToast('New barcode — add its details');
   },
 
   openPicker: () => set({ picker: true }),
@@ -467,7 +481,7 @@ export const useStore = create<Store>((set, get) => ({
       const p: Product = {
         img: '', name: vals.name, short: vals.name.split(' ').slice(0, 2).join(' '),
         price: NUM(vals.price), qty: parseInt(String(vals.qty).replace(/[^0-9]/g, ''), 10) || 0,
-        cat: vals.cat || 'Groceries',
+        cat: vals.cat || 'Groceries', barcode: vals.barcode || '',
       };
       set((s2) => ({ newProducts: [p, ...s2.newProducts], screen: 'stock', formVals: {} }));
       get().showToast(p.short + ' added to stock');

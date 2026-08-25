@@ -88,6 +88,7 @@ export const FORMS: Record<string, FormConfig> = {
       { k: 'price', label: 'SELLING PRICE', ph: '25', money: true },
       { k: 'qty', label: 'OPENING STOCK', ph: '12' },
       { k: 'cat', label: 'CATEGORY', opts: ['Groceries', 'Sauces', 'Confectionery', 'Toiletries', 'Hardware'], def: 'Groceries' },
+      { k: 'barcode', label: 'BARCODE', ph: 'Scan or leave blank' },
     ],
   },
   plan: {

@@ -99,6 +99,8 @@ export interface AppState {
   // scan
   scanning: boolean;
   scanFound: boolean;
+  scannedCode: string | null;
+  scannedProduct: Product | null;
 
   // settings / account / subscription
   payMomo: boolean;

@@ -7,13 +7,18 @@ export interface Product {
   price: number;
   qty: number;
   cat: string;
+  // Synthetic 13-digit code under GS1's "20" restricted-circulation prefix
+  // (reserved for in-store/internal use, never assigned to real retail
+  // products) — lets the barcode scanner recognise catalog items without
+  // pretending to hold real-world UPC/EAN data.
+  barcode: string;
 }
 
-function P(img: string, name: string, short: string, price: number, qty: number, cat: string): Product {
+function P(img: string, name: string, short: string, price: number, qty: number, cat: string): Omit<Product, 'barcode'> {
   return { img, name, short, price, qty, cat };
 }
 
-export const CATALOG: Product[] = [
+const RAW_CATALOG: Omit<Product, 'barcode'>[] = [
   P('heinz-beans', 'Heinz Beans Original 415g', 'Heinz Beans', 25, 42, 'Groceries'),
   P('cheeky-chilli', 'Cheeky Chilli Sauce 200ml', 'Cheeky Chilli', 22, 31, 'Sauces'),
   P('tomato-hot', 'All Gold Hot & Spicy Tomato Sauce 500ml', 'Tomato Sauce', 55, 18, 'Sauces'),
@@ -49,6 +54,8 @@ export const CATALOG: Product[] = [
   P('car-mp5', '7" Touch Screen Car MP5 Player', 'Car MP5', 780, 4, 'Electronics'),
   P('galaxy-s20', 'Samsung Galaxy S20+ Pre-owned', 'Galaxy S20+', 4100, 2, 'Electronics'),
 ];
+
+export const CATALOG: Product[] = RAW_CATALOG.map((p, i) => ({ ...p, barcode: '20' + String(i + 1).padStart(11, '0') }));
 
 export const SCAN: Product = CATALOG[0];
 
