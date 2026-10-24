@@ -1,0 +1,191 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Stockaz — Is This Even In Stock?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="_shared.css" />
+<style>
+  .shelf { display:flex; gap:14px; }
+  .box { width:60px; height:84px; background:#D8CDB8; border-radius:6px; box-shadow: inset 0 0 0 2px rgba(27,22,16,.08); }
+  .mag {
+    position:absolute; width:70px; height:70px; border-radius:999px; border:7px solid rgba(27,22,16,.55);
+    top:40%; left:10%;
+  }
+  .mag::after { content:''; position:absolute; width:7px; height:34px; background: rgba(27,22,16,.55); right:-16px; bottom:-20px; transform: rotate(45deg); border-radius:4px; }
+  .mag.sweep { animation: sweep 2.6s ease-in-out forwards; }
+  @keyframes sweep { from { left:10%; } to { left:72%; } }
+
+  .cam-frame { position:absolute; inset: 70px 26px 70px 26px; z-index:30; opacity:0; }
+  .cam-frame.show { animation: fadeIn .35s ease forwards; }
+  .corner { position:absolute; width:34px; height:34px; border: 4px solid #fff; }
+  .c1 { top:0; left:0; border-right:none; border-bottom:none; border-radius: 8px 0 0 0; }
+  .c2 { top:0; right:0; border-left:none; border-bottom:none; border-radius: 0 8px 0 0; }
+  .c3 { bottom:0; left:0; border-right:none; border-top:none; border-radius: 0 0 0 8px; }
+  .c4 { bottom:0; right:0; border-left:none; border-top:none; border-radius: 0 0 8px 0; }
+  .corner.found { border-color: #8CE08A; }
+  .scanline { position:absolute; left:0; right:0; height:3px; background: #8CE08A; box-shadow: 0 0 14px #8CE08A; top:0; }
+  .scanline.go { animation: scango 1.1s linear infinite; }
+  @keyframes scango { 0% { top:0; } 100% { top:100%; } }
+
+  .dark-cam { position:absolute; inset:0; background: rgba(10,8,5,.78); z-index:20; opacity:0; }
+  .dark-cam.show { animation: fadeIn .35s ease forwards; }
+
+  .barcode-tin {
+    position:absolute; left:50%; top:46%; transform: translate(-50%,-50%);
+    width: 150px; height: 190px; background: var(--product-mat); border-radius: 14px; z-index: 25;
+    display:flex; align-items:center; justify-content:center; padding: 10px; opacity:0;
+  }
+  .barcode-tin.show { animation: fadeIn .3s ease forwards; }
+  .barcode-tin img { max-width: 100%; max-height: 74%; object-fit: contain; }
+  .barbars { display:flex; gap:2px; margin-top:8px; }
+  .barbars div { width:3px; background:#1B1610; }
+
+  .checkmark {
+    position:absolute; left:50%; top:30%; transform: translate(-50%,-50%) scale(0);
+    width:56px; height:56px; border-radius:999px; background:#2FA86B; z-index:40;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .checkmark.pop { animation: popIn .35s cubic-bezier(.3,1.5,.4,1) forwards; }
+
+  .result-card {
+    position:absolute; left:14px; right:14px; bottom:18px; z-index: 50;
+    background: var(--card); border-radius: 22px; padding: 16px; box-shadow: var(--shadow-card);
+    display:flex; align-items:center; gap:12px; transform: translateY(140%); transition: transform .4s cubic-bezier(.2,.9,.2,1);
+  }
+  .result-card.up { transform: translateY(0); }
+  .result-card img { width:50px; height:50px; border-radius:12px; object-fit:contain; background:var(--product-mat); flex:none; }
+  .btnrow { display:flex; gap:8px; margin-top:10px; }
+  .btn { flex:1; text-align:center; font-weight:800; font-size:12.5px; padding:11px; border-radius:12px; }
+  .btn.sell { background: linear-gradient(150deg,#A08256,#7A5F3C); color:#fff; }
+  .btn.restock { background: var(--accent-soft); color: var(--accent-dark); }
+  .btn.tap { animation: popIn .25s ease; }
+  .toast-check {
+    position:absolute; top:38%; left:50%; transform: translate(-50%,-50%) scale(0);
+    width:64px; height:64px; border-radius:999px; background:#2FA86B; z-index:70;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .toast-check.pop { animation: popIn .35s cubic-bezier(.3,1.5,.4,1) forwards; }
+</style>
+</head>
+<body>
+<div class="stage" id="stage">
+
+  <div class="notebook-stage" id="notebook">
+    <div id="shelfView" style="position:relative; width:78%; height:40%;">
+      <div class="shelf" style="position:absolute; left:8%; top:10px;">
+        <div class="box"></div><div class="box"></div><div class="box"></div><div class="box"></div><div class="box"></div>
+      </div>
+      <div class="mag" id="mag"></div>
+    </div>
+    <div class="notebook-page" id="pageView" style="display:none; position:relative;">
+      <div class="handwrite">Peri Peri .......... <span style="color:var(--danger-ink);">???</span></div>
+    </div>
+  </div>
+
+  <div class="phone-stage">
+  <div class="phone-wrap" id="phoneWrap" style="opacity:0;">
+    <div class="phone">
+      <div class="notch"></div>
+      <div class="phone-screen" style="position:relative; background:#15120D;">
+
+        <div class="dark-cam" id="darkCam"></div>
+        <div class="cam-frame" id="camFrame">
+          <div class="corner c1" id="cn1"></div><div class="corner c2" id="cn2"></div>
+          <div class="corner c3" id="cn3"></div><div class="corner c4" id="cn4"></div>
+          <div class="scanline go" id="scanline"></div>
+        </div>
+
+        <div class="barcode-tin" id="tin">
+          <div style="display:flex; flex-direction:column; align-items:center;">
+            <img src="../../assets/products/heinz-beans.png" />
+            <div class="barbars">
+              <div style="height:22px;"></div><div style="height:16px;"></div><div style="height:22px;"></div>
+              <div style="height:12px;"></div><div style="height:22px;"></div><div style="height:16px;"></div>
+              <div style="height:22px;"></div><div style="height:12px;"></div><div style="height:22px;"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="checkmark" id="check">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4 10-11" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+
+        <div class="result-card" id="resultCard">
+          <img src="../../assets/products/heinz-beans.png" />
+          <div style="flex:1;">
+            <div style="font-size:13.5px; font-weight:800; color:var(--ink);">Heinz Beans Original 415g</div>
+            <div style="font-size:12px; font-weight:700; color:var(--accent-dot); margin-top:2px;">K25.00 · 42 left</div>
+            <div class="btnrow">
+              <div class="btn sell" id="sellBtn">Sell</div>
+              <div class="btn restock">Restock</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="toast-check" id="toastCheck">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4 10-11" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="outro" id="outro">
+    <div class="outro-mark">Stock<span>az</span></div>
+    <div class="outro-tag">Run your shop from your pocket.</div>
+    <div class="outro-badge">FREE TO START</div>
+  </div>
+
+  <div class="caption-bar" id="cap"></div>
+</div>
+
+<script src="_shared.js"></script>
+<script>
+  const cap = document.getElementById('cap');
+  const notebook = document.getElementById('notebook');
+  const phoneWrap = document.getElementById('phoneWrap');
+  const outro = document.getElementById('outro');
+
+  caption(cap, "GUESSING WHAT'S STILL IN STOCK?", 300, 3000);
+  caption(cap, "BY THE TIME YOU CHECK, THEY'RE GONE", 3200, 5500);
+  caption(cap, 'STOCKAZ SCANS THE BARCODE', 5700, 7500);
+  caption(cap, "POINT. SCAN. KNOW WHAT YOU'VE GOT", 7700, 12000);
+  caption(cap, 'SELL OR RESTOCK — RIGHT THERE', 12200, 14000);
+  caption(cap, 'STOCKAZ', 14300, 16000);
+
+  setTimeout(() => document.getElementById('mag').classList.add('sweep'), 200);
+  setTimeout(() => {
+    document.getElementById('shelfView').style.display = 'none';
+    document.getElementById('pageView').style.display = 'block';
+  }, 3100);
+  setTimeout(() => notebook.classList.add('fadeout'), 5500);
+  setTimeout(() => { phoneWrap.style.opacity = 1; phoneWrap.classList.add('pop-in'); }, 5800);
+
+  setTimeout(() => document.getElementById('darkCam').classList.add('show'), 6000);
+  setTimeout(() => document.getElementById('camFrame').classList.add('show'), 6200);
+  setTimeout(() => document.getElementById('tin').classList.add('show'), 8200);
+
+  setTimeout(() => {
+    document.getElementById('scanline').classList.remove('go');
+    ['cn1','cn2','cn3','cn4'].forEach((id) => document.getElementById(id).classList.add('found'));
+    document.getElementById('check').classList.add('pop');
+  }, 9800);
+
+  setTimeout(() => {
+    document.getElementById('resultCard').classList.add('up');
+  }, 10400);
+
+  setTimeout(() => {
+    const btn = document.getElementById('sellBtn');
+    btn.classList.add('tap');
+    document.getElementById('check').style.opacity = '0';
+    document.getElementById('toastCheck').classList.add('pop');
+  }, 12800);
+
+  setTimeout(() => outro.classList.add('show'), 14500);
+</script>
+</body>
+</html>

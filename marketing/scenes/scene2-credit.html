@@ -1,0 +1,153 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Stockaz — Who Owes What?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="_shared.css" />
+<style>
+  .crow { display:flex; align-items:center; gap:12px; padding:12px; border-radius:16px; transition: opacity .35s, transform .35s; }
+  .avatar { width:40px; height:40px; border-radius:999px; display:flex; align-items:center; justify-content:center;
+    font-weight:800; color:#fff; font-size:14px; flex:none; background: linear-gradient(150deg,#A08256,#5E4A2E); }
+  .crow .name { font-size:13.5px; font-weight:800; color:var(--ink); }
+  .crow .sub { font-size:11.5px; font-weight:700; margin-top:1px; }
+  .crow .amt { margin-left:auto; font-size:14px; font-weight:800; }
+  .chip { font-size:12px; font-weight:800; padding:7px 14px; border-radius:999px; border:1px solid var(--hairline); color: var(--sub); }
+  .chip.active { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .pen {
+    position:absolute; width:120px; height:5px; background:#C0332F; border-radius:3px;
+    left:20%; top:36%; transform: rotate(-6deg) scaleX(0); transform-origin:left;
+  }
+  .pen.on { animation: penCircle .5s ease forwards; }
+  @keyframes penCircle { to { transform: rotate(-6deg) scaleX(1); } }
+  .qmark { position:absolute; font-family:'Caveat',cursive; font-size:46px; color:#C0332F; left:58%; top:48%; opacity:0; }
+  .qmark.on { animation: fadeIn .4s ease forwards; }
+  .detail-sheet {
+    position:absolute; left:0; right:0; bottom:0; height:46%;
+    background: var(--card); border-radius: 28px 28px 0 0; box-shadow: 0 -20px 40px rgba(0,0,0,.18);
+    padding: 20px; transform: translateY(100%); transition: transform .4s cubic-bezier(.2,.9,.2,1);
+    z-index: 60;
+  }
+  .detail-sheet.up { transform: translateY(0); }
+  .pay-btn { margin-top: 14px; background: linear-gradient(150deg,#A08256,#7A5F3C); color:#fff; font-weight:800; font-size:13.5px;
+    text-align:center; padding:13px; border-radius:14px; box-shadow: 0 10px 20px rgba(122,95,60,.35); }
+  .pay-btn.tap { animation: popIn .25s ease; }
+</style>
+</head>
+<body>
+<div class="stage" id="stage">
+
+  <div class="notebook-stage" id="notebook">
+    <div class="notebook-page" style="position:relative;">
+      <div class="handwrite">
+        John B ............. K140<br/>
+        Kelvin Z ............ K620<br/>
+        Mary T .............. K80<br/>
+        Joseph M ............ K230<br/>
+      </div>
+      <div class="pen" id="pen"></div>
+      <div class="qmark" id="qmark">?</div>
+    </div>
+  </div>
+
+  <div class="phone-stage">
+  <div class="phone-wrap" id="phoneWrap" style="opacity:0;">
+    <div class="phone">
+      <div class="notch"></div>
+      <div class="phone-screen" style="position:relative;">
+        <div class="app-header">
+          <div>
+            <div class="app-title">Credit Book</div>
+            <div class="app-sub">K4,920 outstanding</div>
+          </div>
+        </div>
+        <div style="padding:0 20px 12px; display:flex; gap:8px;">
+          <div class="chip" id="chipAll">All</div>
+          <div class="chip" id="chipDue">Due soon</div>
+          <div class="chip" id="chipOver">Overdue</div>
+        </div>
+        <div style="padding:0 18px; display:flex; flex-direction:column; gap:8px;">
+          <div class="crow glass-card" id="rowJohn" style="box-shadow:none; border:1px solid var(--hairline);">
+            <div class="avatar">JB</div>
+            <div><div class="name">John Banda</div><div class="sub" style="color:var(--accent-dot);">On track</div></div>
+            <div class="amt" style="color:var(--ink);">K140</div>
+          </div>
+          <div class="crow glass-card" id="rowKelvin" style="box-shadow:none; border:1px solid var(--danger-bg);">
+            <div class="avatar" style="background:linear-gradient(150deg,#C0332F,#8A231F);">KZ</div>
+            <div><div class="name">Kelvin Zulu</div><div class="sub" style="color:var(--danger-ink);">Overdue 28 days</div></div>
+            <div class="amt" style="color:var(--danger-ink);" id="kelvinAmt">K620</div>
+          </div>
+        </div>
+
+        <div class="detail-sheet" id="detailSheet">
+          <div style="display:flex; align-items:center; gap:10px;">
+            <div class="avatar" style="background:linear-gradient(150deg,#C0332F,#8A231F); width:46px; height:46px;">KZ</div>
+            <div>
+              <div class="name" style="font-size:15px;">Kelvin Zulu</div>
+              <div class="sub" style="color:var(--danger-ink); font-size:12px;">Overdue 28 days</div>
+            </div>
+          </div>
+          <div style="font-size:34px; font-weight:800; letter-spacing:-1px; margin-top:14px;" id="detailAmt">K620</div>
+          <div class="pay-btn" id="payBtn">Add payment</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="outro" id="outro">
+    <div class="outro-mark">Stock<span>az</span></div>
+    <div class="outro-tag">Run your shop from your pocket.</div>
+    <div class="outro-badge">FREE TO START</div>
+  </div>
+
+  <div class="caption-bar" id="cap"></div>
+</div>
+
+<script src="_shared.js"></script>
+<script>
+  const cap = document.getElementById('cap');
+  const notebook = document.getElementById('notebook');
+  const phoneWrap = document.getElementById('phoneWrap');
+  const outro = document.getElementById('outro');
+
+  caption(cap, 'CHASING CREDIT IN A NOTEBOOK?', 300, 3000);
+  caption(cap, "WHOSE TURN TO PAY? NOBODY'S SURE", 3200, 6000);
+  caption(cap, 'YOUR CREDIT BOOK, ON YOUR PHONE', 6200, 8000);
+  caption(cap, "SORTED BY WHO'S OVERDUE", 8200, 12500);
+  caption(cap, 'LOG A PAYMENT IN TWO TAPS', 12700, 14000);
+  caption(cap, 'STOCKAZ', 14300, 16000);
+
+  setTimeout(() => document.getElementById('pen').classList.add('on'), 3300);
+  setTimeout(() => document.getElementById('qmark').classList.add('on'), 3900);
+  setTimeout(() => notebook.classList.add('fadeout'), 6000);
+  setTimeout(() => { phoneWrap.style.opacity = 1; phoneWrap.classList.add('pop-in'); }, 6300);
+
+  // tap "Overdue" chip -> John Banda row fades out
+  setTimeout(() => {
+    document.getElementById('chipOver').classList.add('active');
+    const john = document.getElementById('rowJohn');
+    john.style.opacity = '0';
+    john.style.transform = 'translateX(-18px)';
+    john.style.height = '0';
+    john.style.overflow = 'hidden';
+    john.style.padding = '0 12px';
+  }, 9200);
+
+  // open detail sheet on Kelvin
+  setTimeout(() => {
+    document.getElementById('detailSheet').classList.add('up');
+  }, 12700);
+  setTimeout(() => {
+    const btn = document.getElementById('payBtn');
+    btn.classList.add('tap');
+    document.getElementById('detailAmt').textContent = 'K100';
+    document.getElementById('kelvinAmt').textContent = 'K100';
+  }, 13400);
+
+  setTimeout(() => outro.classList.add('show'), 14500);
+</script>
+</body>
+</html>

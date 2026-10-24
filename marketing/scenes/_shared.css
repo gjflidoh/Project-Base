@@ -1,0 +1,250 @@
+/* Shared visual language for all Stockaz marketing scenes.
+   Palette ported from src/theme/tokens.ts (lightPalette) so every scene
+   matches the real app exactly, not an approximation of it. */
+
+:root {
+  --screen: #F7F4EF;
+  --ink: #1B1610;
+  --sub: #6B6055;
+  --faint: #9A8D7D;
+  --accent: #7C6340;
+  --accent-dark: #5E4A2E;
+  --accent-light: #A08256;
+  --accent-soft: rgba(149,119,80,.12);
+  --accent-border: rgba(149,119,80,.3);
+  --accent-dot: #957750;
+  --danger: #E5484D;
+  --danger-ink: #C0332F;
+  --danger-bg: rgba(197,44,40,.08);
+  --warn: #E08A00;
+  --warn-bg: rgba(224,138,0,.14);
+  --ok: #957750;
+  --ok-bg: rgba(149,119,80,.13);
+  --hairline: rgba(27,22,16,.08);
+  --card: #ffffff;
+  --product-mat: #F4F0E7;
+  --shadow-card: 0 12px 30px rgba(58,44,28,.14);
+  --shadow-hero: 0 20px 44px rgba(84,63,42,.28);
+
+  /* "problem" (notebook) scenes use a desaturated, dimmer palette */
+  --paper: #EFE9DA;
+  --paper-line: rgba(27,22,16,.14);
+  --pencil: #3A322A;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--screen);
+  font-family: 'Manrope', sans-serif;
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+.stage {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--screen);
+}
+
+/* ---------- layout: square (1080x1080) vs vertical (1080x1920) ---------- */
+
+.stage { display: flex; flex-direction: column; align-items: center; justify-content: center; }
+
+body.square .phone-stage { transform: scale(1.0); }
+body.vertical .phone-stage { transform: scale(1.8); }
+
+/* .phone-stage carries the format scale; .phone-wrap (nested inside it) is
+   a separate element that carries the appear/pop-in animation — keeping
+   them on different elements means their two `transform: scale()` rules
+   never fight over the same computed value. */
+.phone-stage {
+  position: relative;
+  width: 420px;
+  height: 860px;
+  flex: none;
+}
+.phone-wrap {
+  position: absolute;
+  inset: 0;
+}
+
+/* ---------- phone mockup ---------- */
+
+.phone {
+  position: absolute;
+  inset: 0;
+  background: #0E0B07;
+  border-radius: 54px;
+  box-shadow: var(--shadow-hero), 0 0 0 2px rgba(255,255,255,.04) inset;
+  padding: 14px;
+}
+
+.phone-screen {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: var(--screen);
+  border-radius: 42px;
+  overflow: hidden;
+}
+
+.notch {
+  position: absolute;
+  top: 10px; left: 50%;
+  transform: translateX(-50%);
+  width: 110px; height: 24px;
+  background: #0E0B07;
+  border-radius: 14px;
+  z-index: 50;
+}
+
+/* ---------- generic app-screen chrome ---------- */
+
+.app-header {
+  padding: 46px 20px 14px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.app-title { font-size: 22px; font-weight: 800; letter-spacing: -0.4px; color: var(--ink); }
+.app-sub { font-size: 12.5px; font-weight: 600; color: var(--sub); margin-top: 2px; }
+
+.glass-card {
+  background: rgba(255,255,255,.99);
+  border: 1px solid rgba(255,255,255,.95);
+  border-radius: 22px;
+  box-shadow: var(--shadow-card);
+}
+
+.pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  border-radius: 999px; padding: 6px 12px;
+  font-size: 11.5px; font-weight: 800; letter-spacing: .3px;
+}
+.pill.ok { color: #58452B; background: var(--ok-bg); }
+.pill.warn { color: #8A5A06; background: var(--warn-bg); }
+.pill.bad { color: #A32824; background: var(--danger-bg); }
+
+.dot { width: 8px; height: 8px; border-radius: 999px; flex: none; }
+
+/* ---------- caption lower-third (burned-in captions) ---------- */
+
+.caption-bar {
+  position: absolute;
+  left: 50%;
+  bottom: 7%;
+  transform: translate(-50%, 10px);
+  max-width: 86%;
+  padding: 14px 26px;
+  border-radius: 16px;
+  background: rgba(16,12,7,.82);
+  backdrop-filter: blur(6px);
+  color: #fff;
+  font-size: 27px;
+  font-weight: 800;
+  letter-spacing: -0.2px;
+  text-align: center;
+  line-height: 1.25;
+  opacity: 0;
+  z-index: 80;
+  white-space: nowrap;
+}
+body.vertical .caption-bar { font-size: 30px; white-space: normal; }
+.caption-bar.show { animation: capIn .35s ease-out forwards; }
+
+@keyframes capIn {
+  from { opacity: 0; transform: translate(-50%, 10px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+/* ---------- "problem" notebook scenes ---------- */
+
+.notebook-stage {
+  position: absolute; inset: 0;
+  background: var(--paper);
+  display: flex; align-items: center; justify-content: center;
+  filter: saturate(.55) brightness(.92);
+  transition: filter 1.1s ease, opacity 1.1s ease;
+}
+.notebook-stage.resolve { filter: saturate(1) brightness(1); }
+.notebook-stage.fadeout { opacity: 0; }
+
+.notebook-page {
+  width: 78%;
+  height: 72%;
+  background: #F7F2E6;
+  border-radius: 4px;
+  box-shadow: 0 30px 60px rgba(0,0,0,.25);
+  position: relative;
+  padding: 50px 40px;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 47px,
+    var(--paper-line) 48px
+  );
+}
+body.vertical .notebook-page { width: 84%; height: 62%; }
+
+.handwrite {
+  font-family: 'Caveat', cursive;
+  color: var(--pencil);
+  font-size: 34px;
+  line-height: 48px;
+  white-space: pre-wrap;
+}
+
+.strike {
+  position: relative;
+  color: var(--danger-ink);
+}
+.strike::after {
+  content: '';
+  position: absolute;
+  left: -4px; right: -4px; top: 50%;
+  height: 3px;
+  background: var(--danger-ink);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+.strike.on::after { animation: strikeOn .45s ease forwards; }
+@keyframes strikeOn { to { transform: scaleX(1); } }
+
+/* ---------- outro ---------- */
+
+.outro {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 14px;
+  background: var(--screen);
+  opacity: 0;
+  z-index: 100;
+}
+.outro.show { animation: fadeIn .5s ease forwards; }
+.outro-mark {
+  font-size: 52px; font-weight: 800; letter-spacing: -1px; color: var(--ink);
+}
+.outro-mark span { color: var(--accent); }
+.outro-tag { font-size: 16px; font-weight: 700; color: var(--sub); }
+.outro-badge {
+  margin-top: 6px;
+  font-size: 12.5px; font-weight: 800; letter-spacing: .4px;
+  color: #58452B; background: var(--ok-bg);
+  border-radius: 999px; padding: 8px 18px;
+}
+
+/* ---------- generic utility animations ---------- */
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
+@keyframes slideUp { from { opacity: 0; transform: translateY(26px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes popIn { from { opacity: 0; transform: scale(.8); } to { opacity: 1; transform: scale(1); } }
+@keyframes pulse { 0%,100% { box-shadow: 0 0 0 0 rgba(224,138,0,.35); } 50% { box-shadow: 0 0 0 8px rgba(224,138,0,0); } }
+
+.fade-in { opacity: 0; animation: fadeIn .5s ease forwards; }
+.slide-up { opacity: 0; animation: slideUp .5s ease forwards; }
+.pop-in { opacity: 0; animation: popIn .4s cubic-bezier(.3,1.4,.4,1) forwards; }
