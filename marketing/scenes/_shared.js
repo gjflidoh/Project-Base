@@ -46,3 +46,45 @@ function countUp(el, from, to, startAt, durMs, fmt) {
 function money(n) {
   return 'K' + Math.round(n).toLocaleString('en-US');
 }
+
+// Navigate from one .screen-panel to another at time `at` (ms): the old
+// panel plays its `leave` animation, the new one its `enter` animation.
+function navTo(fromEl, toEl, at) {
+  setTimeout(() => {
+    if (fromEl) {
+      fromEl.classList.remove('enter');
+      fromEl.classList.add('leave');
+    }
+    // toEl may be revisiting a panel that was itself a `fromEl` earlier
+    // (and so still carries a stale `leave`) — clear it, since `.leave`
+    // and `.enter` set the same `animation` property and, same
+    // specificity, the later rule in the stylesheet (`.leave`) would
+    // otherwise always win and the panel would stay invisible.
+    toEl.classList.remove('leave');
+    toEl.style.opacity = '';
+    toEl.style.zIndex = '10';
+    toEl.classList.add('enter');
+  }, at);
+}
+
+// Type `text` into el's textContent one character at a time, finishing by
+// startAt + text.length*stepMs.
+function typeInto(el, text, startAt, stepMs) {
+  stepMs = stepMs || 65;
+  setTimeout(() => {
+    let i = 0;
+    const iv = setInterval(() => {
+      i++;
+      el.textContent = text.slice(0, i);
+      if (i >= text.length) clearInterval(iv);
+    }, stepMs);
+  }, startAt);
+}
+
+// Open/close a .sheet + its .sheet-backdrop together.
+function sheetSet(sheetEl, backdropEl, open, at) {
+  setTimeout(() => {
+    sheetEl.classList.toggle('up', open);
+    if (backdropEl) backdropEl.classList.toggle('show', open);
+  }, at);
+}

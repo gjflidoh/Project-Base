@@ -8,14 +8,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="_shared.css" />
 <style>
-  .crow { display:flex; align-items:center; gap:12px; padding:12px; border-radius:16px; transition: opacity .35s, transform .35s; }
-  .avatar { width:40px; height:40px; border-radius:999px; display:flex; align-items:center; justify-content:center;
-    font-weight:800; color:#fff; font-size:14px; flex:none; background: linear-gradient(150deg,#A08256,#5E4A2E); }
-  .crow .name { font-size:13.5px; font-weight:800; color:var(--ink); }
-  .crow .sub { font-size:11.5px; font-weight:700; margin-top:1px; }
-  .crow .amt { margin-left:auto; font-size:14px; font-weight:800; }
-  .chip { font-size:12px; font-weight:800; padding:7px 14px; border-radius:999px; border:1px solid var(--hairline); color: var(--sub); }
-  .chip.active { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .crow { transition: opacity .35s ease, max-height .35s ease, padding .35s ease, margin .35s ease; max-height:64px; overflow:hidden; }
+  .crow.hide { opacity:0; max-height:0; padding-top:0; padding-bottom:0; }
   .pen {
     position:absolute; width:120px; height:5px; background:#C0332F; border-radius:3px;
     left:20%; top:36%; transform: rotate(-6deg) scaleX(0); transform-origin:left;
@@ -24,16 +18,17 @@
   @keyframes penCircle { to { transform: rotate(-6deg) scaleX(1); } }
   .qmark { position:absolute; font-family:'Caveat',cursive; font-size:46px; color:#C0332F; left:58%; top:48%; opacity:0; }
   .qmark.on { animation: fadeIn .4s ease forwards; }
-  .detail-sheet {
-    position:absolute; left:0; right:0; bottom:0; height:46%;
-    background: var(--card); border-radius: 28px 28px 0 0; box-shadow: 0 -20px 40px rgba(0,0,0,.18);
-    padding: 20px; transform: translateY(100%); transition: transform .4s cubic-bezier(.2,.9,.2,1);
-    z-index: 60;
-  }
-  .detail-sheet.up { transform: translateY(0); }
-  .pay-btn { margin-top: 14px; background: linear-gradient(150deg,#A08256,#7A5F3C); color:#fff; font-weight:800; font-size:13.5px;
-    text-align:center; padding:13px; border-radius:14px; box-shadow: 0 10px 20px rgba(122,95,60,.35); }
-  .pay-btn.tap { animation: popIn .25s ease; }
+  .txn-row { display:flex; align-items:center; justify-content:space-between; padding:10px 0; border-top:1px solid var(--hairline); font-size:12.5px; }
+  .txn-row:first-of-type { border-top:none; }
+  .filter-chip { display:inline-flex; align-items:center; gap:6px; height:38px; padding:0 13px; border-radius:13px; background:rgba(27,22,16,.05); border:1px solid var(--hairline); font-size:11.5px; font-weight:800; color:var(--ink); }
+  .cust-chip { font-size:11px; font-weight:800; padding:7px 12px; border-radius:999px; border:1px solid var(--hairline); color:var(--sub); flex:none; }
+  .cust-chip.active { background: var(--ink); color:#fff; border-color: var(--ink); }
+  .qa-tile { border-radius:14px; background:rgba(255,255,255,.99); border:1px solid rgba(255,255,255,.95); box-shadow:var(--shadow-card); padding:8px; text-align:center; }
+  .qa-tile img { width:34px; height:34px; object-fit:contain; margin:0 auto; display:block; }
+  .qa-tile .qn { font-size:9.5px; font-weight:800; color:var(--ink); margin-top:5px; }
+  .qa-tile .qp { font-size:9px; font-weight:700; color:var(--accent); margin-top:1px; }
+  .toast { position:absolute; left:50%; bottom:14px; transform:translate(-50%,10px); opacity:0; background:rgba(16,12,7,.9); color:#fff; font-size:11.5px; font-weight:800; padding:10px 16px; border-radius:12px; z-index:90; white-space:nowrap; }
+  .toast.show { animation: capIn .3s ease-out forwards; }
 </style>
 </head>
 <body>
@@ -42,10 +37,10 @@
   <div class="notebook-stage" id="notebook">
     <div class="notebook-page" style="position:relative;">
       <div class="handwrite">
-        John B ............. K140<br/>
+        John B ............. K650<br/>
         Kelvin Z ............ K620<br/>
-        Mary T .............. K80<br/>
-        Joseph M ............ K230<br/>
+        Mary P .............. K320<br/>
+        Chanda HW ........... K430<br/>
       </div>
       <div class="pen" id="pen"></div>
       <div class="qmark" id="qmark">?</div>
@@ -53,48 +48,137 @@
   </div>
 
   <div class="phone-stage">
-  <div class="phone-wrap" id="phoneWrap" style="opacity:0;">
-    <div class="phone">
-      <div class="notch"></div>
-      <div class="phone-screen" style="position:relative;">
-        <div class="app-header">
-          <div>
-            <div class="app-title">Credit Book</div>
-            <div class="app-sub">K4,920 outstanding</div>
-          </div>
-        </div>
-        <div style="padding:0 20px 12px; display:flex; gap:8px;">
-          <div class="chip" id="chipAll">All</div>
-          <div class="chip" id="chipDue">Due soon</div>
-          <div class="chip" id="chipOver">Overdue</div>
-        </div>
-        <div style="padding:0 18px; display:flex; flex-direction:column; gap:8px;">
-          <div class="crow glass-card" id="rowJohn" style="box-shadow:none; border:1px solid var(--hairline);">
-            <div class="avatar">JB</div>
-            <div><div class="name">John Banda</div><div class="sub" style="color:var(--accent-dot);">On track</div></div>
-            <div class="amt" style="color:var(--ink);">K140</div>
-          </div>
-          <div class="crow glass-card" id="rowKelvin" style="box-shadow:none; border:1px solid var(--danger-bg);">
-            <div class="avatar" style="background:linear-gradient(150deg,#C0332F,#8A231F);">KZ</div>
-            <div><div class="name">Kelvin Zulu</div><div class="sub" style="color:var(--danger-ink);">Overdue 28 days</div></div>
-            <div class="amt" style="color:var(--danger-ink);" id="kelvinAmt">K620</div>
-          </div>
-        </div>
+   <div class="phone-bob">
+    <div class="phone-wrap" id="phoneWrap" style="opacity:0;">
+      <div class="phone">
+        <div class="notch"></div>
+        <div class="phone-screen" id="phoneScreen">
 
-        <div class="detail-sheet" id="detailSheet">
-          <div style="display:flex; align-items:center; gap:10px;">
-            <div class="avatar" style="background:linear-gradient(150deg,#C0332F,#8A231F); width:46px; height:46px;">KZ</div>
-            <div>
-              <div class="name" style="font-size:15px;">Kelvin Zulu</div>
-              <div class="sub" style="color:var(--danger-ink); font-size:12px;">Overdue 28 days</div>
+          <!-- PANEL 1: Credit list -->
+          <div class="screen-panel enter" id="panelList">
+            <div class="app-header" style="padding-bottom:8px;">
+              <div><div class="app-title">Credit</div><div class="app-sub" id="owingLabel">7 customers owing</div></div>
+              <div style="background:linear-gradient(150deg,#A08256,#7A5F3C); border-radius:13px; padding:9px 13px; display:flex; align-items:center; gap:6px;">
+                <span style="color:#fff; font-size:13px; font-weight:800;">＋</span>
+                <span style="color:#fff; font-size:11px; font-weight:800;">Add Credit</span>
+              </div>
+            </div>
+            <div class="panel-scroll">
+              <div style="display:flex; gap:8px; flex:none;">
+                <div class="glass-card" style="flex:1; height:38px; display:flex; align-items:center; padding:0 13px; box-shadow:none; border:1px solid var(--hairline);">
+                  <span style="font-size:12px; font-weight:600; color:var(--faint);">Name or phone number</span>
+                </div>
+                <div class="filter-chip" id="filterChip">All</div>
+              </div>
+
+              <div class="hero-grad" style="flex:none;">
+                <div class="hg-label">Outstanding Credit</div>
+                <div class="hg-amount" id="heroTotal">K0</div>
+                <div class="hg-sub" id="heroSub">0 customers owing</div>
+              </div>
+
+              <div style="display:flex; gap:8px; flex:none;">
+                <div class="stat-card" style="flex:1;"><div class="sv" id="paidMonth" style="font-size:16px;">K0</div><div class="sl">Paid This Month</div></div>
+                <div class="stat-card" style="flex:1;"><div class="sv" id="overdueAmt" style="font-size:16px; color:var(--danger-ink);">K0</div><div class="sl">Overdue</div></div>
+              </div>
+
+              <div class="glass-card" id="custList" style="overflow:hidden; flex:none;">
+                <div class="lrow crow" id="rowJB"><div class="avatar">JB</div><div><div class="lr-title">John Banda</div><div class="lr-sub">Last credit: Today</div></div><div class="lr-trail"><div class="lr-top">K650</div></div></div>
+                <div class="lrow crow" id="rowKZ" style="position:relative;"><div class="avatar" style="background:linear-gradient(150deg,#C0332F,#8A231F);">KZ</div><div><div class="lr-title">Kelvin Zulu</div><div class="lr-sub" style="color:var(--danger-ink);">Overdue · 28 days</div></div><div class="lr-trail"><div class="lr-top" style="color:var(--danger-ink);">K620</div></div></div>
+                <div class="lrow crow" id="rowMP"><div class="avatar" style="background:linear-gradient(150deg,#8A9B6E,#5E6B47);">MP</div><div><div class="lr-title">Mary Phiri</div><div class="lr-sub">Last credit: 20 Aug</div></div><div class="lr-trail"><div class="lr-top">K320</div></div></div>
+                <div class="lrow crow" id="rowCH"><div class="avatar">CH</div><div><div class="lr-title">Chanda Hardware</div><div class="lr-sub">Last credit: 19 Aug</div></div><div class="lr-trail"><div class="lr-top">K430</div></div></div>
+                <div class="lrow crow" id="rowLL"><div class="avatar">LL</div><div><div class="lr-title">Lusaka Lodge</div><div class="lr-sub">Last credit: 17 Aug</div></div><div class="lr-trail"><div class="lr-top">K560</div></div></div>
+              </div>
             </div>
           </div>
-          <div style="font-size:34px; font-weight:800; letter-spacing:-1px; margin-top:14px;" id="detailAmt">K620</div>
-          <div class="pay-btn" id="payBtn">Add payment</div>
+
+          <!-- PANEL 2: Credit detail (Kelvin Zulu) -->
+          <div class="screen-panel" id="panelDetail">
+            <div class="back-header">
+              <div class="back-btn">←</div>
+              <div><div class="bh-title">Kelvin Zulu</div><div class="bh-sub">+260 95 908 2214</div></div>
+              <div class="bh-action"><div style="background:var(--danger-bg); border-radius:20px; padding:6px 11px;"><span style="font-size:10.5px; font-weight:800; color:var(--danger-ink);" id="detailBadge">Overdue</span></div></div>
+            </div>
+            <div class="panel-scroll">
+              <div class="hero-grad" style="flex:none;">
+                <div class="hg-label">Outstanding Balance</div>
+                <div class="hg-amount" id="detailBalance">K620</div>
+                <div class="hg-sub">Overdue · 28 days · issued by Kelvin</div>
+              </div>
+
+              <div class="glass-card" style="padding:0 14px; flex:none;">
+                <div class="sec-label" style="padding-top:11px;">26 JUL</div>
+                <div class="txn-row"><span style="font-weight:600;">Richdoor Padlock × 2</span><span style="font-weight:800;">K84</span></div>
+                <div class="txn-row"><span style="font-weight:600;">Roofing Bolts × 6</span><span style="font-weight:800;">K264</span></div>
+                <div class="txn-row" style="padding-bottom:11px;"><span style="font-weight:600;">Wrench 21/23</span><span style="font-weight:800;">K50</span></div>
+              </div>
+              <div class="glass-card" style="padding:0 14px; flex:none;">
+                <div class="sec-label" style="padding-top:11px;">22 JUL</div>
+                <div class="txn-row"><span style="font-weight:600;">Peri Peri × 2</span><span style="font-weight:800;">K130</span></div>
+                <div class="txn-row" style="padding-bottom:11px;"><span style="font-weight:600;">Pilchards × 4</span><span style="font-weight:800;">K80</span></div>
+              </div>
+
+              <div style="display:flex; gap:9px; flex:none;">
+                <div class="btn-primary" style="flex:1; text-align:center;">Add Credit</div>
+                <div class="btn-ghost" style="flex:1; text-align:center;" id="recordPayBtn">Record Payment</div>
+              </div>
+              <div style="height:42px; border-radius:15px; background:rgba(27,22,16,.05); border:1px solid var(--hairline); display:flex; align-items:center; justify-content:center; flex:none;">
+                <span style="font-size:12.5px; font-weight:700; color:var(--ink);" id="reminderLbl">Send Reminder</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- PANEL 3: Add Credit -->
+          <div class="screen-panel" id="panelAdd">
+            <div class="app-header" style="padding-bottom:4px;">
+              <div class="back-btn" style="margin-right:4px;">✕</div>
+              <div style="flex:1;"><div class="app-title" style="font-size:19px;">Add Credit</div></div>
+            </div>
+            <div class="panel-scroll">
+              <div class="sec-label">Customer</div>
+              <div style="display:flex; gap:7px; flex-wrap:wrap; flex:none;">
+                <div class="cust-chip">John Banda</div><div class="cust-chip active">Kelvin Zulu</div><div class="cust-chip">Mary Phiri</div><div class="cust-chip">Chanda HW</div>
+              </div>
+              <div style="display:flex; gap:8px; flex:none;">
+                <div class="glass-card" style="flex:1; height:40px; display:flex; align-items:center; padding:0 12px; box-shadow:none; border:1px solid var(--hairline);"><span style="font-size:11.5px; font-weight:600; color:var(--faint);">Search or scan product</span></div>
+                <div style="width:40px; height:40px; border-radius:13px; background:linear-gradient(150deg,#A08256,#7A5F3C); display:flex; align-items:center; justify-content:center; flex:none;"><span style="color:#fff; font-size:15px;">▣</span></div>
+              </div>
+
+              <div id="addedLines" style="display:flex; flex-direction:column; gap:8px; flex:none;"></div>
+
+              <div class="sec-label">Quick add</div>
+              <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; flex:none;">
+                <div class="qa-tile" id="qaBeans"><img src="../../assets/products/heinz-beans.png"/><div class="qn">Heinz Beans</div><div class="qp">K25.00</div></div>
+                <div class="qa-tile" id="qaPilch"><img src="../../assets/products/pilchards.png"/><div class="qn">Pilchards</div><div class="qp">K20.00</div></div>
+                <div class="qa-tile"><img src="../../assets/products/cheeky-chilli.png"/><div class="qn">Cheeky Chilli</div><div class="qp">K22.00</div></div>
+              </div>
+            </div>
+            <div style="position:absolute; left:10px; right:10px; bottom:10px; border-radius:20px; background:rgba(255,255,255,.98); box-shadow:var(--shadow-card); padding:14px; z-index:20;">
+              <div style="display:flex; justify-content:space-between; font-size:11px; font-weight:600; color:var(--sub);"><span>Current Balance</span><span>K620</span></div>
+              <div style="display:flex; justify-content:space-between; font-size:11px; font-weight:600; color:var(--sub); margin-top:4px;"><span>New Credit</span><span id="newCreditAmt">K0</span></div>
+              <div style="display:flex; justify-content:space-between; align-items:baseline; margin:8px 0;"><span style="font-size:12px; font-weight:800; color:var(--ink);">New Balance</span><span style="font-size:21px; font-weight:800; color:var(--ink);" id="newBalanceAmt">K620</span></div>
+              <div class="btn-primary" id="confirmCreditBtn" style="text-align:center;">Confirm Credit</div>
+            </div>
+          </div>
+
+          <!-- Record Payment sheet -->
+          <div class="sheet-backdrop" id="payBackdrop"></div>
+          <div class="sheet" id="paySheet">
+            <div class="sheet-handle"></div>
+            <div style="font-size:15px; font-weight:800; color:var(--ink); margin-bottom:12px;">Record Payment</div>
+            <div class="field"><div class="fl">Amount received</div><div class="fi" id="fAmount">&nbsp;</div></div>
+            <div class="field">
+              <div class="fl">Received as</div>
+              <div class="chip-row"><div class="cat-chip" id="chipCash" style="font-size:10.5px; font-weight:800; padding:7px 13px; border-radius:999px; border:1px solid var(--hairline); color:var(--sub);">Cash</div><div class="cat-chip" style="font-size:10.5px; font-weight:800; padding:7px 13px; border-radius:999px; border:1px solid var(--hairline); color:var(--sub);">Mobile Money</div></div>
+            </div>
+            <div class="btn-primary" id="payBtn" style="text-align:center;">Record Payment</div>
+          </div>
+
+          <div class="toast" id="toast"></div>
         </div>
       </div>
     </div>
-  </div>
+   </div>
   </div>
 
   <div class="outro" id="outro">
@@ -112,42 +196,79 @@
   const notebook = document.getElementById('notebook');
   const phoneWrap = document.getElementById('phoneWrap');
   const outro = document.getElementById('outro');
+  const panelList = document.getElementById('panelList');
+  const panelDetail = document.getElementById('panelDetail');
+  const panelAdd = document.getElementById('panelAdd');
 
-  caption(cap, 'CHASING CREDIT IN A NOTEBOOK?', 300, 3000);
-  caption(cap, "WHOSE TURN TO PAY? NOBODY'S SURE", 3200, 6000);
-  caption(cap, 'YOUR CREDIT BOOK, ON YOUR PHONE', 6200, 8000);
-  caption(cap, "SORTED BY WHO'S OVERDUE", 8200, 12500);
-  caption(cap, 'LOG A PAYMENT IN TWO TAPS', 12700, 14000);
-  caption(cap, 'STOCKAZ', 14300, 16000);
+  caption(cap, 'CHASING CREDIT IN A NOTEBOOK FULL OF NAMES?', 300, 4300);
+  caption(cap, "WHOSE TURN TO PAY? NOBODY'S REALLY SURE", 4500, 8300);
+  setTimeout(() => document.getElementById('pen').classList.add('on'), 2000);
+  setTimeout(() => document.getElementById('qmark').classList.add('on'), 2600);
+  setTimeout(() => notebook.classList.add('fadeout'), 8300);
+  setTimeout(() => { phoneWrap.style.opacity = 1; phoneWrap.classList.add('pop-in'); }, 8600);
 
-  setTimeout(() => document.getElementById('pen').classList.add('on'), 3300);
-  setTimeout(() => document.getElementById('qmark').classList.add('on'), 3900);
-  setTimeout(() => notebook.classList.add('fadeout'), 6000);
-  setTimeout(() => { phoneWrap.style.opacity = 1; phoneWrap.classList.add('pop-in'); }, 6300);
+  caption(cap, 'YOUR CREDIT BOOK — NOW ON YOUR PHONE', 8900, 12500);
+  countUp(document.getElementById('heroTotal'), 0, 3450, 9200, 1400, (n) => 'K' + Math.round(n).toLocaleString('en-US'));
+  countUp(document.getElementById('paidMonth'), 0, 850, 9300, 1200, (n) => 'K' + Math.round(n).toLocaleString('en-US'));
+  countUp(document.getElementById('overdueAmt'), 0, 620, 9300, 1200, (n) => 'K' + Math.round(n).toLocaleString('en-US'));
+  setTimeout(() => document.getElementById('heroSub').textContent = '7 customers owing', 10600);
 
-  // tap "Overdue" chip -> John Banda row fades out
+  caption(cap, 'EVERY CUSTOMER, EVERY BALANCE — SORTED', 12700, 17000);
+  setTimeout(() => document.getElementById('filterChip').classList.add('tap-fx'), 15000);
   setTimeout(() => {
-    document.getElementById('chipOver').classList.add('active');
-    const john = document.getElementById('rowJohn');
-    john.style.opacity = '0';
-    john.style.transform = 'translateX(-18px)';
-    john.style.height = '0';
-    john.style.overflow = 'hidden';
-    john.style.padding = '0 12px';
-  }, 9200);
+    document.getElementById('filterChip').textContent = 'Overdue';
+    ['rowJB','rowMP','rowCH','rowLL'].forEach((id) => document.getElementById(id).classList.add('hide'));
+  }, 15300);
 
-  // open detail sheet on Kelvin
-  setTimeout(() => {
-    document.getElementById('detailSheet').classList.add('up');
-  }, 12700);
-  setTimeout(() => {
-    const btn = document.getElementById('payBtn');
-    btn.classList.add('tap');
-    document.getElementById('detailAmt').textContent = 'K100';
-    document.getElementById('kelvinAmt').textContent = 'K100';
-  }, 13400);
+  caption(cap, 'OVERDUE AT A GLANCE — NO MORE GUESSING', 17200, 21000);
+  setTimeout(() => document.getElementById('rowKZ').classList.add('tap-fx'), 20600);
+  navTo(panelList, panelDetail, 21000);
 
-  setTimeout(() => outro.classList.add('show'), 14500);
+  caption(cap, "TAP A CUSTOMER FOR THE FULL HISTORY", 21200, 26000);
+  caption(cap, 'EVERY SALE AND PAYMENT, DATED', 26200, 31000);
+
+  caption(cap, 'LOG A PAYMENT IN TWO TAPS', 31200, 35500);
+  setTimeout(() => document.getElementById('recordPayBtn').classList.add('tap-fx'), 31600);
+  sheetSet(document.getElementById('paySheet'), document.getElementById('payBackdrop'), true, 32000);
+  typeInto(document.getElementById('fAmount'), 'K500', 32500, 140);
+  setTimeout(() => document.getElementById('fAmount').classList.add('focus'), 32450);
+  setTimeout(() => document.getElementById('chipCash').classList.add('active'), 33400);
+  setTimeout(() => document.getElementById('payBtn').classList.add('tap-fx'), 34400);
+  sheetSet(document.getElementById('paySheet'), document.getElementById('payBackdrop'), false, 34700);
+  setTimeout(() => {
+    document.getElementById('detailBalance').textContent = 'K120';
+    document.getElementById('detailBadge').textContent = 'Healthy';
+    document.getElementById('detailBadge').parentElement.style.background = 'var(--ok-bg)';
+    document.getElementById('detailBadge').style.color = 'var(--ok-ink, #58452B)';
+  }, 34900);
+
+  caption(cap, 'BALANCE UPDATES — EVERYWHERE, INSTANTLY', 35700, 39500);
+  navTo(panelDetail, panelAdd, 39700);
+
+  caption(cap, 'NEED TO ADD CREDIT? PICK THE PRODUCTS', 39900, 44000);
+  setTimeout(() => document.getElementById('qaBeans').classList.add('tap-fx'), 41200);
+  setTimeout(() => {
+    document.getElementById('addedLines').insertAdjacentHTML('beforeend', '<div class="glass-card" style="padding:9px 12px; display:flex; align-items:center; gap:10px; box-shadow:none; border:1px solid var(--hairline);"><img src="../../assets/products/heinz-beans.png" style="width:32px;height:32px;border-radius:10px;background:var(--product-mat);object-fit:contain;"/><div style="flex:1;"><div style="font-size:11.5px;font-weight:800;color:var(--ink);">Heinz Beans Original 415g</div></div><div style="font-size:12px;font-weight:800;color:var(--accent);">K25.00</div></div>');
+    document.getElementById('newCreditAmt').textContent = 'K25';
+    document.getElementById('newBalanceAmt').textContent = 'K645';
+  }, 41500);
+  setTimeout(() => document.getElementById('qaPilch').classList.add('tap-fx'), 42400);
+  setTimeout(() => {
+    document.getElementById('addedLines').insertAdjacentHTML('beforeend', '<div class="glass-card" style="padding:9px 12px; display:flex; align-items:center; gap:10px; box-shadow:none; border:1px solid var(--hairline);"><img src="../../assets/products/pilchards.png" style="width:32px;height:32px;border-radius:10px;background:var(--product-mat);object-fit:contain;"/><div style="flex:1;"><div style="font-size:11.5px;font-weight:800;color:var(--ink);">Lucky Star Pilchards 155g</div></div><div style="font-size:12px;font-weight:800;color:var(--accent);">K20.00</div></div>');
+    document.getElementById('newCreditAmt').textContent = 'K45';
+    document.getElementById('newBalanceAmt').textContent = 'K665';
+  }, 42700);
+
+  caption(cap, 'CONFIRM — AND THE BOOK UPDATES ITSELF', 44200, 48500);
+  setTimeout(() => document.getElementById('confirmCreditBtn').classList.add('tap-fx'), 45600);
+  setTimeout(() => {
+    const t = document.getElementById('toast');
+    t.textContent = 'K45 added to Kelvin Zulu’s credit';
+    t.classList.add('show');
+  }, 46000);
+
+  setTimeout(() => outro.classList.add('show'), 48700);
+  caption(cap, 'STOCKAZ', 49000, 53500);
 </script>
 </body>
 </html>

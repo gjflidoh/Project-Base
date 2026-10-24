@@ -2,70 +2,92 @@
 
 4 videos, each delivered in **Square 1:1** (1080×1080) and **Vertical 9:16** (1080×1920) — 8 files total.
 Narrative shape: **problem → Stockaz solution**, every video ending on the same logo/CTA outro.
-Audio treatment: **scripted voiceover** — record the VO lines below over the rendered (silent) picture lock; captions on-screen already mirror every VO line 1:1, so the videos work with or without the recorded audio.
+Each video now runs **~55-58 seconds** and walks through several real app screens per feature, not just one card.
+Audio treatment: **scripted voiceover** — record the VO lines below over the rendered (silent) picture lock. Captions are already burned in and mirror every VO line 1:1, so the videos work with or without the recorded audio.
 
-Shared outro (all 4 videos, last ~2.5s): Stockaz wordmark on cream background, tagline **"Run your shop from your pocket."**, small "Free to start" badge.
-
----
-
-## Video 1 — "The Notebook Problem" (Stock)
-Runtime: 17s
-
-| Time | Visual | VO | Caption |
-|---|---|---|---|
-| 0.0–3.5 | Dim, desaturated scene: a torn exercise-book page, handwritten tally marks and crossed-out numbers, pencil tapping impatiently | "Still counting stock in a notebook?" | STILL COUNTING STOCK IN A NOTEBOOK? |
-| 3.5–6.5 | Page curls/dissolves away into light; color warms up | "One torn page, and you've lost a week of counts." | ONE TORN PAGE AND YOU'VE LOST A WEEK |
-| 6.5–8.5 | Hard cut to full color — Stockaz phone mockup rises in, Stock screen fading in | "Stockaz keeps it on your phone instead." | STOCKAZ KEEPS IT ON YOUR PHONE |
-| 8.5–13.0 | Stock screen live: search bar types "Peri Peri", list filters live, a low-stock badge pulses amber on "Peri Peri · 9 left" | "Search any product. See what's low, what's out, instantly." | SEE WHAT'S LOW — INSTANTLY |
-| 13.0–14.5 | Quick zoom on stock value card: "34 products · K 48,210 in stock" counting up | "Your whole shop's value, at a glance." | YOUR WHOLE SHOP, AT A GLANCE |
-| 14.5–17.0 | Outro | "Stockaz. Run your shop from your pocket." | STOCKAZ |
+Shared outro (all 4 videos, last ~4s): Stockaz wordmark on cream background, tagline **"Run your shop from your pocket."**, "Free to start" badge.
 
 ---
 
-## Video 2 — "Who Owes What?" (Credit book)
-Runtime: 16s
+## Video 1 — "The Notebook Problem" (Stock) · ~55s
 
-| Time | Visual | VO | Caption |
-|---|---|---|---|
-| 0.0–3.0 | Dim scene: a dog-eared exercise book full of names and amounts in different pens, a thumb flipping pages, frustrated | "Chasing credit in a notebook full of names?" | CHASING CREDIT IN A NOTEBOOK? |
-| 3.0–6.0 | A name is circled messily, question mark drawn over an amount | "Whose turn to pay? Nobody's sure." | WHOSE TURN TO PAY? NOBODY'S SURE |
-| 6.0–8.0 | Cut to color — Stockaz Credit Book screen fades in over phone mockup | "Stockaz keeps your credit book for you." | YOUR CREDIT BOOK, ON YOUR PHONE |
-| 8.0–12.5 | Credit list live: rows for John Banda (OK, green), Kelvin Zulu (Overdue, red "K620"), filter chip "Overdue" tapped, list narrows to just the overdue row | "Every customer, every balance — sorted by who's overdue." | SORTED BY WHO'S OVERDUE |
-| 12.5–14.0 | Tap into Kelvin Zulu's detail → "Add payment" button glows, amount K620 ticks down as a payment is logged | "Log a payment in two taps." | LOG A PAYMENT IN TWO TAPS |
-| 14.0–16.0 | Outro | "Stockaz. Run your shop from your pocket." | STOCKAZ |
-
----
-
-## Video 3 — "Is This Even In Stock?" (Barcode scan)
-Runtime: 16s
-
-| Time | Visual | VO | Caption |
-|---|---|---|---|
-| 0.0–3.0 | Dim scene: shopkeeper squinting at a shelf, scanning rows of packets by eye, shrugging | "Guessing if something's still in stock?" | GUESSING WHAT'S STILL IN STOCK? |
-| 3.0–5.5 | Walks to the back, flips through the same torn notebook, finds nothing useful | "By the time you check the book, the customer's gone." | BY THE TIME YOU CHECK, THEY'RE GONE |
-| 5.5–7.5 | Cut to color — phone mockup, camera viewfinder frame opens with a scan-line animation | "Stockaz scans the barcode instead." | STOCKAZ SCANS THE BARCODE |
-| 7.5–12.0 | Scan-line sweeps across a Heinz Beans tin, corner brackets snap onto the barcode, green "match found" check — product card slides up: "Heinz Beans Original 415g · K25 · 42 left" | "Point. Scan. Know exactly what you've got — and the price." | POINT. SCAN. KNOW WHAT YOU'VE GOT |
-| 12.0–14.0 | Two buttons appear under the card: "Sell" / "Restock" — Sell gets tapped, a receipt check-mark pops | "Sell it, or restock it — right from the scan." | SELL OR RESTOCK — RIGHT THERE |
-| 14.0–16.0 | Outro | "Stockaz. Run your shop from your pocket." | STOCKAZ |
+| Time | Visual | VO / Caption |
+|---|---|---|
+| 0.3–4.3 | Torn exercise-book page, tally marks, one line struck out | STILL COUNTING STOCK IN A NOTEBOOK? |
+| 4.5–8.3 | Page smudged/illegible entry | ONE TORN PAGE AND YOU'VE LOST A WEEK'S COUNTS |
+| 8.9–12.5 | Phone rises in — Stock screen, stat grid counts up (34 products · 4 low · 2 out · K48,210) | MEET STOCKAZ — YOUR STOCK, ON YOUR PHONE |
+| 12.7–16.5 | Search bar types "Peri Peri", row highlights low-stock | SEARCH ANY PRODUCT, INSTANTLY |
+| 16.7–20.5 | Search clears, full list returns | SEE WHAT'S LOW BEFORE YOU RUN OUT |
+| 20.7–25.5 | "Add product" tapped → New Product sheet: name/price/qty/category filled in | ADD A NEW PRODUCT IN SECONDS |
+| 25.7–29.5 | Sheet closes, new row flashes into the list with a checkmark | IT'S IN YOUR STOCK LIST — ALREADY |
+| 29.7–34.0 | Tap an out-of-stock row (Unbs Jelly) → Restock sheet, stepper counts 0→12 | RUNNING OUT? RESTOCK IN TWO TAPS |
+| 34.2–38.0 | Row updates: qty 12, out-of-stock badge gone | BACK ON THE SHELF — AND YOU KNOW IT |
+| 38.2–43.0 | Stock Value card recounts up, highlighted | YOUR WHOLE SHOP'S VALUE, ALWAYS CURRENT |
+| 43.2–47.5 | Hold on full stock list | NO NOTEBOOK. NO GUESSWORK. |
+| 48.0–52.5 | Outro | STOCKAZ |
 
 ---
 
-## Video 4 — "What Did I Even Sell Today?" (Reports / Monitor)
-Runtime: 16s
+## Video 2 — "Who Owes What?" (Credit Book) · ~56s
 
-| Time | Visual | VO | Caption |
-|---|---|---|---|
-| 0.0–3.0 | Dim scene: a shoebox of crumpled receipts being shaken out onto a table at night, exhausted sigh | "End of day, and you've no idea what actually sold?" | NO IDEA WHAT ACTUALLY SOLD TODAY? |
-| 3.0–5.5 | Receipts scattered, none add up, a calculator with a long error-looking string of digits | "Adding it up by hand, every single night." | ADDING IT UP BY HAND, EVERY NIGHT |
-| 5.5–7.5 | Cut to color — phone mockup, Reports screen fades in, big total counting up | "Stockaz adds it up the second you make the sale." | STOCKAZ ADDS IT UP AS YOU SELL |
-| 7.5–12.0 | Reports screen live: "Today" tab, total "K 3,940" ticking up, a bar chart of top sellers growing in, "32 transactions" | "Today's total, your best sellers, who's on shift — all in one screen." | TOTAL, TOP SELLERS, ALL IN ONE SCREEN |
-| 12.0–14.0 | Switch period chip "Today → Week → Month", chart reflows smoothly | "Zoom out any time — today, this week, this month." | ZOOM OUT ANY TIME |
-| 14.0–16.0 | Outro | "Stockaz. Run your shop from your pocket." | STOCKAZ |
+| Time | Visual | VO / Caption |
+|---|---|---|
+| 0.3–4.3 | Dog-eared book full of names/amounts in different pens | CHASING CREDIT IN A NOTEBOOK FULL OF NAMES? |
+| 4.5–8.3 | A name circled, question mark scrawled over an amount | WHOSE TURN TO PAY? NOBODY'S REALLY SURE |
+| 8.9–12.5 | Credit screen: hero card counts up to K3,450 outstanding, stat cards (Paid This Month / Overdue) | YOUR CREDIT BOOK — NOW ON YOUR PHONE |
+| 12.7–17.0 | Filter chip tapped → list narrows to "Overdue" only | EVERY CUSTOMER, EVERY BALANCE — SORTED |
+| 17.2–21.0 | Tap Kelvin Zulu's row → Customer Detail screen slides in | OVERDUE AT A GLANCE — NO MORE GUESSING |
+| 21.2–31.0 | Customer detail: balance K620, dated transaction history (26 Jul / 22 Jul) | TAP A CUSTOMER FOR THE FULL HISTORY / EVERY SALE AND PAYMENT, DATED |
+| 31.2–35.5 | "Record Payment" → sheet: K500, Cash, submit | LOG A PAYMENT IN TWO TAPS |
+| 35.7–39.5 | Balance updates to K120, badge flips Overdue → Healthy | BALANCE UPDATES — EVERYWHERE, INSTANTLY |
+| 39.9–44.0 | Add Credit screen: customer chips, quick-add product tiles | NEED TO ADD CREDIT? PICK THE PRODUCTS |
+| 44.2–48.5 | Two products added, bottom bar totals update, Confirm tapped | CONFIRM — AND THE BOOK UPDATES ITSELF |
+| 49.0–53.5 | Outro | STOCKAZ |
+
+---
+
+## Video 3 — "Is This Even In Stock?" (Barcode Scan) · ~58s
+
+| Time | Visual | VO / Caption |
+|---|---|---|
+| 0.3–4.3 | Shopkeeper scans shelves with a magnifying glass, unsure | GUESSING WHAT'S STILL IN STOCK? |
+| 4.5–8.3 | Flips to notebook — no useful answer | BY THE TIME YOU CHECK THE BOOK, THEY'RE GONE |
+| 8.9–12.0 | New Sale screen, scan icon tapped → camera opens | STOCKAZ SCANS THE BARCODE INSTEAD |
+| 12.2–17.0 | Viewfinder, scan-line sweep, corner brackets lock green, match found | POINT. SCAN. KNOW EXACTLY WHAT YOU HAVE |
+| 17.2–19.8 | Result card: Heinz Beans · K25.00 · 42 left · Sell/Restock | PRICE, STOCK ON HAND — ALL THERE |
+| 20.0–23.5 | Cuts to Sale screen — item already in the cart | IT'S ALREADY IN YOUR CART |
+| 23.7–28.0 | Amount paid entered, change auto-calculates, Sell tapped | ENTER WHAT THEY PAID — CHANGE IS AUTOMATIC |
+| 29.0–33.0 | Back to scan entry for a second item | SCAN SOMETHING NEW? JUST AS FAST |
+| 33.2–37.5 | Scan-line, brackets flash red — barcode not recognized | NOT IN YOUR STOCK YET? ADD IT ON THE SPOT |
+| 37.6–42.0 | New Product sheet opens — barcode field already filled from the scan | THE BARCODE'S ALREADY FILLED IN |
+| 42.2–46.5 | Name/price/qty filled, Save tapped, toast confirms | SAVE — AND IT'S PART OF YOUR STOCK |
+| 46.7–50.5 | Hold | SCAN TO SELL. SCAN TO ADD. NEVER GUESS. |
+| 51.0–55.5 | Outro | STOCKAZ |
+
+---
+
+## Video 4 — "What Did I Even Sell Today?" (Reports · Receipts · Monitor) · ~55s
+
+| Time | Visual | VO / Caption |
+|---|---|---|
+| 0.3–4.3 | Shoebox of receipts shaken onto a table, calculator with a garbled total | NO IDEA WHAT ACTUALLY SOLD TODAY? |
+| 4.5–8.3 | Receipts scattered, adding up by hand | ADDING IT UP BY HAND, EVERY SINGLE NIGHT |
+| 8.9–12.5 | Reports screen: today's total counts up to K4,820, 7-day bar chart | STOCKAZ ADDS IT UP THE MOMENT YOU SELL |
+| 12.7–16.5 | Payment split bars fill in (Cash K2,340 / Mobile K2,480) | TODAY'S TOTAL, SPLIT BY HOW THEY PAID |
+| 16.7–20.5 | Best sellers list (Heinz Beans, Chicco Bobo, Cheeky Chilli) | AND YOUR BEST SELLERS, RANKED |
+| 20.7–25.0 | Week tab tapped — totals, chart and split all update to real weekly figures | ZOOM OUT — SAME SCREEN, A WIDER WINDOW |
+| 25.2–29.5 | Cuts to Receipts screen, three receipts with product thumbnails | EVERY SALE, AS A RECEIPT YOU CAN FIND |
+| 29.7–33.5 | Today/Week/Month tabs | FILTER BY TODAY, THIS WEEK, THIS MONTH |
+| 33.7–38.0 | Cuts to Shop Monitor: Shop Open · Live, today's sales hero | SEE YOUR WHOLE SHOP — LIVE |
+| 38.2–43.0 | Staff on shift: Kelvin (Working), Mutinta (Shift ended), transactions & sales per person | WHO'S WORKING, AND WHAT THEY'VE SOLD |
+| 43.2–47.5 | Hold | YOUR SHOP, IN YOUR POCKET — ANY TIME OF DAY |
+| 48.0–52.5 | Outro | STOCKAZ |
 
 ---
 
 ## Production notes
-- All 4 scenes share one HTML/CSS template (`marketing/scenes/_shared.css` + `_shared.js`): Manrope font, Stockaz camel-brown/cream palette pulled from `src/theme/tokens.ts`, a reusable phone-mockup frame, a lower-third caption bar, and the shared outro component.
-- Each scene file renders at whichever canvas size Playwright opens — same DOM/timeline, two crops (1080×1080 / 1080×1920) — so picture lock is identical between formats, only the composition safe-area differs.
-- All animation is deterministic CSS `@keyframes`/Web Animations run off a fixed clock (no `Math.random`, no real network/image-load races), so the Playwright capture duration always matches the script's run length exactly.
-- Captions are burned in (not relying on recorded VO timing), so each video is watchable muted; the VO track is a separate addition on top.
+- All 4 scenes share one HTML/CSS/JS framework (`marketing/scenes/_shared.css`, `_shared.js`): Manrope font, Stockaz camel-brown/cream palette pulled directly from `src/theme/tokens.ts`, a reusable phone mockup (with a subtle idle float for a more "produced" feel), a burned-in lower-third caption bar, reusable screen components (stat grid, list rows, hero gradient card, bottom sheets, segmented tabs, form fields, steppers) and the shared outro.
+- Every screen, number, product, and customer shown is pulled from the app's real data files (`src/data/catalog.ts`, `src/data/credit.ts`, `src/data/reports.ts`) rather than invented placeholders, so the videos track the actual Stockaz screens: Stock, Credit list/detail, Add Credit, the real camera-based barcode Scan flow, Sale/checkout, Receipts, Reports and Shop Monitor.
+- Each scene is one continuous DOM timeline with several `.screen-panel` sections that slide/cross-fade in as the video "navigates" between real screens, plus bottom sheets that slide up over whichever screen is active — the same navigation model the app itself uses.
+- All animation is deterministic (fixed `setTimeout`/CSS keyframe schedules, no `Math.random`, no real network/image-load races), so a Playwright capture of a given duration always reproduces the same picture lock.
+- Captions are burned in and mirror the VO line-for-line, so every video is fully watchable muted; the VO track is a separate layer added on top of the picture lock.

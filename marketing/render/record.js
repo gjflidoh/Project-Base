@@ -12,10 +12,10 @@ const SCENES_DIR = path.join(__dirname, '..', 'scenes');
 const OUT_DIR = process.argv[2] ? path.resolve(process.argv[2]) : path.join(__dirname, '..', 'out');
 
 const SCENES = [
-  { file: 'scene1-stock.html', name: 'stockaz-1-notebook-problem', durationMs: 17400 },
-  { file: 'scene2-credit.html', name: 'stockaz-2-who-owes-what', durationMs: 16400 },
-  { file: 'scene3-scan.html', name: 'stockaz-3-is-it-in-stock', durationMs: 16400 },
-  { file: 'scene4-reports.html', name: 'stockaz-4-what-sold-today', durationMs: 16400 },
+  { file: 'scene1-stock.html', name: 'stockaz-1-notebook-problem', durationMs: 54500 },
+  { file: 'scene2-credit.html', name: 'stockaz-2-who-owes-what', durationMs: 55500 },
+  { file: 'scene3-scan.html', name: 'stockaz-3-is-it-in-stock', durationMs: 57500 },
+  { file: 'scene4-reports.html', name: 'stockaz-4-what-sold-today', durationMs: 54500 },
 ];
 
 const FORMATS = [

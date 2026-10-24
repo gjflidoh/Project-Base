@@ -9,28 +9,41 @@
 <link rel="stylesheet" href="_shared.css" />
 <style>
   .receipt {
-    position:absolute; width:60px; height:120px; background:#fff;
+    position:absolute; width:56px; height:112px; background:#fff;
     box-shadow: 0 10px 18px rgba(0,0,0,.18);
     background-image: repeating-linear-gradient(to bottom, rgba(27,22,16,.12) 0, rgba(27,22,16,.12) 2px, transparent 2px, transparent 10px);
     opacity:0;
   }
   .receipt.drop { animation: drop .6s cubic-bezier(.3,.9,.4,1) forwards; }
   @keyframes drop { from { opacity:0; transform: translateY(-40px) rotate(0deg); } to { opacity:1; transform: translateY(0) rotate(var(--rot)); } }
-
   .calc {
-    position:absolute; width:150px; height:110px; left:50%; top:60%; transform: translate(-50%,-50%);
-    background:#2A2420; border-radius:10px; padding:10px; opacity:0;
+    position:absolute; width:140px; height:100px; left:50%; top:60%; transform: translate(-50%,-50%);
+    background:#2A2420; border-radius:10px; padding:9px; opacity:0;
   }
   .calc.show { animation: fadeIn .4s ease forwards; }
-  .calc-screen { background:#9FB79A; border-radius:4px; height:34px; display:flex; align-items:center; justify-content:flex-end; padding:0 8px; }
-  .calc-screen span { font-family: monospace; font-size:13px; color:#1B1610; letter-spacing:1px; }
+  .calc-screen { background:#9FB79A; border-radius:4px; height:30px; display:flex; align-items:center; justify-content:flex-end; padding:0 8px; }
+  .calc-screen span { font-family: monospace; font-size:12px; color:#1B1610; letter-spacing:1px; }
 
-  .bar-row { display:flex; align-items:flex-end; gap:10px; height:92px; padding: 0 6px; }
-  .bar { width:24px; background: linear-gradient(180deg,#A08256,#7A5F3C); border-radius:6px 6px 2px 2px; height:0; transition: height .7s cubic-bezier(.2,.9,.2,1); }
-  .bar-label { font-size:10px; font-weight:700; color:var(--faint); text-align:center; margin-top:4px; width:24px; }
+  .hbar { display:flex; align-items:flex-end; gap:5px; height:68px; margin-top:14px; }
+  .hbar > div { flex:1; display:flex; flex-direction:column; align-items:center; gap:4px; }
+  .hbar .bb { width:100%; border-radius:5px; background:rgba(255,255,255,.34); height:0; transition:height .6s cubic-bezier(.2,.9,.2,1); }
+  .hbar .bb.hi { background: rgba(255,255,255,.95); }
+  .hbar .bl { font-size:8.5px; font-weight:700; color:rgba(255,255,255,.65); }
 
-  .period-chip { font-size:12px; font-weight:800; padding:7px 14px; border-radius:999px; border:1px solid var(--hairline); color: var(--sub); }
-  .period-chip.active { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .split-row .bar-track { height:7px; border-radius:6px; background:var(--hairline); margin-top:5px; overflow:hidden; }
+  .split-row .bar-fill { width:0%; height:100%; border-radius:6px; transition: width .7s cubic-bezier(.2,.9,.2,1); }
+
+  .best-row { display:flex; align-items:center; gap:11px; padding:9px 0; border-top:1px solid var(--hairline); }
+  .best-row:first-child { border-top:none; }
+  .best-row img { width:34px; height:34px; border-radius:11px; background:var(--product-mat); object-fit:contain; flex:none; }
+
+  .rcpt-card { display:flex; align-items:center; gap:11px; padding:12px; border-radius:16px; background:rgba(255,255,255,.99); border:1px solid rgba(255,255,255,.95); box-shadow:var(--shadow-card); }
+  .rcpt-icon { width:36px; height:36px; border-radius:12px; background:rgba(149,119,80,.12); display:flex; align-items:center; justify-content:center; flex:none; }
+  .rcpt-thumbs { display:flex; gap:4px; margin-top:6px; }
+  .rcpt-thumbs .t { width:22px; height:22px; border-radius:7px; background:var(--product-mat); border:1px solid var(--hairline); object-fit:contain; }
+
+  .staff-row { display:flex; align-items:center; gap:12px; padding:13px; border-radius:16px; background:rgba(255,255,255,.99); border:1px solid rgba(255,255,255,.95); box-shadow:var(--shadow-card); }
+  .staff-av { width:40px; height:40px; border-radius:14px; display:flex; align-items:center; justify-content:center; font-weight:800; color:#fff; font-size:14px; }
 </style>
 </head>
 <body>
@@ -38,52 +51,149 @@
 
   <div class="notebook-stage" id="notebook">
     <div style="position:relative; width:78%; height:60%;">
-      <div class="receipt" style="--rot:-14deg; left:10%; top:10%;" id="r1"></div>
-      <div class="receipt" style="--rot:10deg; left:30%; top:20%;" id="r2"></div>
-      <div class="receipt" style="--rot:-6deg; left:50%; top:4%;" id="r3"></div>
-      <div class="receipt" style="--rot:16deg; left:68%; top:24%;" id="r4"></div>
-      <div class="receipt" style="--rot:4deg; left:20%; top:40%;" id="r5"></div>
-      <div class="calc" id="calc">
-        <div class="calc-screen"><span id="calcDigits">4827.5190061772...</span></div>
-      </div>
+      <div class="receipt" style="--rot:-14deg; left:8%; top:8%;" id="r1"></div>
+      <div class="receipt" style="--rot:10deg; left:28%; top:18%;" id="r2"></div>
+      <div class="receipt" style="--rot:-6deg; left:48%; top:2%;" id="r3"></div>
+      <div class="receipt" style="--rot:16deg; left:66%; top:22%;" id="r4"></div>
+      <div class="receipt" style="--rot:4deg; left:18%; top:38%;" id="r5"></div>
+      <div class="calc" id="calc"><div class="calc-screen"><span id="calcDigits">4827.5190061772...</span></div></div>
     </div>
   </div>
 
   <div class="phone-stage">
-  <div class="phone-wrap" id="phoneWrap" style="opacity:0;">
-    <div class="phone">
-      <div class="notch"></div>
-      <div class="phone-screen">
-        <div class="app-header">
-          <div>
-            <div class="app-title">Reports</div>
-            <div class="app-sub" id="txnCount">0 transactions</div>
+   <div class="phone-bob">
+    <div class="phone-wrap" id="phoneWrap" style="opacity:0;">
+      <div class="phone">
+        <div class="notch"></div>
+        <div class="phone-screen" id="phoneScreen">
+
+          <!-- PANEL 1: Reports -->
+          <div class="screen-panel enter" id="panelReports">
+            <div class="back-header" style="padding-bottom:6px;"><div class="back-btn">←</div><div class="bh-title">Reports</div></div>
+            <div class="panel-scroll">
+              <div class="segmented" style="flex:none;">
+                <div class="seg active" id="segToday">Today</div>
+                <div class="seg" id="segWeek">Week</div>
+                <div class="seg" id="segMonth">Month</div>
+              </div>
+
+              <div class="hero-grad" style="flex:none;">
+                <div class="hg-label" id="repLabel">Sales · Today</div>
+                <div class="hg-amount" id="repTotal">K0</div>
+                <div class="hg-sub" id="repSub">0 transactions</div>
+                <div class="hbar" id="hbar">
+                  <div><div class="bb" id="b0"></div><div class="bl">M</div></div>
+                  <div><div class="bb" id="b1"></div><div class="bl">T</div></div>
+                  <div><div class="bb" id="b2"></div><div class="bl">W</div></div>
+                  <div><div class="bb" id="b3"></div><div class="bl">T</div></div>
+                  <div><div class="bb" id="b4"></div><div class="bl">F</div></div>
+                  <div><div class="bb" id="b5"></div><div class="bl">S</div></div>
+                  <div><div class="bb hi" id="b6"></div><div class="bl">S</div></div>
+                </div>
+              </div>
+
+              <div class="glass-card" style="padding:14px; flex:none;">
+                <div style="font-size:12px; font-weight:800; color:var(--ink);">Payment split</div>
+                <div style="margin-top:10px; display:flex; flex-direction:column; gap:9px;" id="splitRows">
+                  <div class="split-row"><div style="display:flex; justify-content:space-between; font-size:11px; font-weight:700;"><span>Cash</span><span id="splitCashAmt">K0</span></div><div class="bar-track"><div class="bar-fill" id="splitCashBar" style="background:#957750;"></div></div></div>
+                  <div class="split-row"><div style="display:flex; justify-content:space-between; font-size:11px; font-weight:700;"><span>Mobile Money</span><span id="splitMobileAmt">K0</span></div><div class="bar-track"><div class="bar-fill" id="splitMobileBar" style="background:#7C6340;"></div></div></div>
+                  <div class="split-row" id="splitCreditRow" style="display:none;"><div style="display:flex; justify-content:space-between; font-size:11px; font-weight:700;"><span>Credit</span><span id="splitCreditAmt">K0</span></div><div class="bar-track"><div class="bar-fill" id="splitCreditBar" style="background:#9A8D7D;"></div></div></div>
+                </div>
+              </div>
+
+              <div class="glass-card" style="padding:0 14px 6px; flex:none;">
+                <div style="font-size:12px; font-weight:800; color:var(--ink); padding-top:13px; padding-bottom:4px;">Best sellers</div>
+                <div class="best-row"><img src="../../assets/products/heinz-beans.png"/><div style="flex:1;"><div style="font-size:11.5px; font-weight:700; color:var(--ink);">Heinz Beans</div><div style="font-size:10px; font-weight:600; color:var(--faint);" id="bs1units">34 sold</div></div><div style="font-size:11.5px; font-weight:800; color:var(--accent);" id="bs1rev">K850</div></div>
+                <div class="best-row"><img src="../../assets/products/chicco-bobo.png"/><div style="flex:1;"><div style="font-size:11.5px; font-weight:700; color:var(--ink);">Chicco Bobo</div><div style="font-size:10px; font-weight:600; color:var(--faint);" id="bs2units">96 sold</div></div><div style="font-size:11.5px; font-weight:800; color:var(--accent);" id="bs2rev">K96</div></div>
+                <div class="best-row"><img src="../../assets/products/cheeky-chilli.png"/><div style="flex:1;"><div style="font-size:11.5px; font-weight:700; color:var(--ink);">Cheeky Chilli</div><div style="font-size:10px; font-weight:600; color:var(--faint);" id="bs3units">21 sold</div></div><div style="font-size:11.5px; font-weight:800; color:var(--accent);" id="bs3rev">K462</div></div>
+              </div>
+
+              <div style="height:42px; border-radius:15px; background:rgba(27,22,16,.05); border:1px solid var(--hairline); display:flex; align-items:center; justify-content:center; flex:none;" id="monitorLink">
+                <span style="font-size:12px; font-weight:700; color:var(--ink);">Open live Shop Monitor</span>
+              </div>
+            </div>
           </div>
-        </div>
-        <div style="padding:0 20px 10px; display:flex; gap:8px;">
-          <div class="period-chip active" id="chipToday">Today</div>
-          <div class="period-chip" id="chipWeek">Week</div>
-          <div class="period-chip" id="chipMonth">Month</div>
-        </div>
-        <div style="padding: 0 20px;">
-          <div class="glass-card" style="padding:18px; box-shadow:none; border:1px solid var(--hairline);">
-            <div style="font-size:11.5px; font-weight:800; letter-spacing:1px; color:var(--faint); text-transform:uppercase;">Total — Today</div>
-            <div style="font-size:38px; font-weight:800; letter-spacing:-1px; margin-top:4px;">K<span id="total">0</span></div>
+
+          <!-- PANEL 2: Receipts -->
+          <div class="screen-panel" id="panelReceipts">
+            <div class="app-header" style="padding-bottom:8px;"><div><div class="app-title" style="font-size:20px;">Receipts</div></div></div>
+            <div class="panel-scroll">
+              <div class="segmented" style="flex:none;">
+                <div class="seg" id="rsegAll">All</div>
+                <div class="seg active" id="rsegToday">Today</div>
+                <div class="seg" id="rsegWeek">Week</div>
+                <div class="seg" id="rsegMonth">Month</div>
+              </div>
+              <div style="display:flex; flex-direction:column; gap:9px; flex:none;">
+                <div class="rcpt-card">
+                  <div class="rcpt-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 3h14v18l-3-2-2 2-2-2-2 2-3-2z" stroke="#7C6340" stroke-width="1.6"/><path d="M9 8h5M9 12h5" stroke="#7C6340" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+                  <div style="flex:1;">
+                    <div style="font-size:12.5px; font-weight:800; color:var(--ink);">RCT-1042</div>
+                    <div style="font-size:10px; font-weight:600; color:var(--faint); margin-top:1px;">4:12 PM · Walk-in</div>
+                    <div class="rcpt-thumbs"><img class="t" src="../../assets/products/heinz-beans.png"/><img class="t" src="../../assets/products/pilchards.png"/></div>
+                  </div>
+                  <div style="text-align:right;"><div style="font-size:13px; font-weight:800; color:var(--ink);">K65.00</div><div style="font-size:9.5px; font-weight:700; color:var(--accent); margin-top:2px;">Cash</div></div>
+                </div>
+                <div class="rcpt-card">
+                  <div class="rcpt-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 3h14v18l-3-2-2 2-2-2-2 2-3-2z" stroke="#7C6340" stroke-width="1.6"/><path d="M9 8h5M9 12h5" stroke="#7C6340" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+                  <div style="flex:1;">
+                    <div style="font-size:12.5px; font-weight:800; color:var(--ink);">RCT-1041</div>
+                    <div style="font-size:10px; font-weight:600; color:var(--faint); margin-top:1px;">3:48 PM · John Banda</div>
+                    <div class="rcpt-thumbs"><img class="t" src="../../assets/products/nandos-peri.png"/><img class="t" src="../../assets/products/chicco-bobo.png"/><img class="t" src="../../assets/products/movit-jelly.png"/></div>
+                  </div>
+                  <div style="text-align:right;"><div style="font-size:13px; font-weight:800; color:var(--ink);">K238.00</div><div style="font-size:9.5px; font-weight:700; color:var(--accent); margin-top:2px;">Mobile</div></div>
+                </div>
+                <div class="rcpt-card" id="rcptThird" style="opacity:0; transform:translateY(10px);">
+                  <div class="rcpt-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 3h14v18l-3-2-2 2-2-2-2 2-3-2z" stroke="#7C6340" stroke-width="1.6"/><path d="M9 8h5M9 12h5" stroke="#7C6340" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+                  <div style="flex:1;">
+                    <div style="font-size:12.5px; font-weight:800; color:var(--ink);">RCT-1040</div>
+                    <div style="font-size:10px; font-weight:600; color:var(--faint); margin-top:1px;">2:05 PM · Walk-in</div>
+                    <div class="rcpt-thumbs"><img class="t" src="../../assets/products/mamas-oil.png"/></div>
+                  </div>
+                  <div style="text-align:right;"><div style="font-size:13px; font-weight:800; color:var(--ink);">K212.00</div><div style="font-size:9.5px; font-weight:700; color:var(--accent); margin-top:2px;">Cash</div></div>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-        <div style="padding: 16px 20px;">
-          <div style="font-size:11.5px; font-weight:800; letter-spacing:1px; color:var(--faint); text-transform:uppercase; margin-bottom:10px;">Top sellers</div>
-          <div class="bar-row">
-            <div style="text-align:center;"><div class="bar" id="b1"></div><div class="bar-label">Beans</div></div>
-            <div style="text-align:center;"><div class="bar" id="b2"></div><div class="bar-label">Bobo</div></div>
-            <div style="text-align:center;"><div class="bar" id="b3"></div><div class="bar-label">Pilch.</div></div>
-            <div style="text-align:center;"><div class="bar" id="b4"></div><div class="bar-label">Peri</div></div>
-            <div style="text-align:center;"><div class="bar" id="b5"></div><div class="bar-label">Jelly</div></div>
+
+          <!-- PANEL 3: Monitor -->
+          <div class="screen-panel" id="panelMonitor">
+            <div class="back-header" style="padding-bottom:6px;"><div class="back-btn">←</div><div class="bh-title">Shop Monitor</div></div>
+            <div class="panel-scroll">
+              <div class="glass-card" style="padding:13px; display:flex; align-items:center; gap:10px; flex:none;">
+                <div style="width:8px; height:8px; border-radius:4px; background:var(--accent-dot);"></div>
+                <div style="flex:1;"><div style="font-size:13px; font-weight:800; color:var(--ink);">Shop Open</div><div style="font-size:10.5px; font-weight:600; color:var(--faint); margin-top:1px;">Chilenje Branch · since 07:12</div></div>
+                <div style="font-size:10.5px; font-weight:700; color:var(--accent);">Live</div>
+              </div>
+
+              <div class="hero-grad" style="flex:none;">
+                <div class="hg-label">Today's Sales</div>
+                <div class="hg-amount" id="monTotal">K0</div>
+                <div class="hero-mini">
+                  <div><div class="mv" id="monTxns">0</div><div class="ml">Transactions</div></div>
+                  <div><div class="mv" id="monCash">K0</div><div class="ml">Cash</div></div>
+                  <div><div class="mv" id="monMobile">K0</div><div class="ml">Mobile</div></div>
+                </div>
+              </div>
+
+              <div class="sec-label" style="flex:none;">Staff on shift</div>
+              <div class="staff-row" style="flex:none;">
+                <div class="staff-av" style="background:linear-gradient(150deg,#A08256,#5E4A2E);">K</div>
+                <div style="flex:1;"><div style="font-size:13.5px; font-weight:800; color:var(--ink);">Kelvin</div><div style="font-size:10.5px; font-weight:600; color:var(--faint); margin-top:1px;">41 transactions · K3,170 sales</div></div>
+                <div class="status-pill on"><span class="sdot"></span>Working</div>
+              </div>
+              <div class="staff-row" style="flex:none;">
+                <div class="staff-av" style="background:var(--hairline); color:var(--sub);">M</div>
+                <div style="flex:1;"><div style="font-size:13.5px; font-weight:800; color:var(--ink);">Mutinta</div><div style="font-size:10.5px; font-weight:600; color:var(--faint); margin-top:1px;">22 transactions · K1,650 sales</div></div>
+                <div class="status-pill off">Shift ended</div>
+              </div>
+            </div>
           </div>
+
         </div>
       </div>
     </div>
-  </div>
+   </div>
   </div>
 
   <div class="outro" id="outro">
@@ -101,53 +211,88 @@
   const notebook = document.getElementById('notebook');
   const phoneWrap = document.getElementById('phoneWrap');
   const outro = document.getElementById('outro');
+  const panelReports = document.getElementById('panelReports');
+  const panelReceipts = document.getElementById('panelReceipts');
+  const panelMonitor = document.getElementById('panelMonitor');
 
-  caption(cap, 'NO IDEA WHAT ACTUALLY SOLD TODAY?', 300, 3000);
-  caption(cap, 'ADDING IT UP BY HAND, EVERY NIGHT', 3200, 5500);
-  caption(cap, 'STOCKAZ ADDS IT UP AS YOU SELL', 5700, 7500);
-  caption(cap, 'TOTAL, TOP SELLERS, ALL IN ONE SCREEN', 7700, 12000);
-  caption(cap, 'ZOOM OUT ANY TIME', 12200, 14000);
-  caption(cap, 'STOCKAZ', 14300, 16000);
+  caption(cap, 'NO IDEA WHAT ACTUALLY SOLD TODAY?', 300, 4300);
+  caption(cap, 'ADDING IT UP BY HAND, EVERY SINGLE NIGHT', 4500, 8300);
+  ['r1','r2','r3','r4','r5'].forEach((id, i) => setTimeout(() => document.getElementById(id).classList.add('drop'), 300 + i * 230));
+  setTimeout(() => document.getElementById('calc').classList.add('show'), 3600);
+  setTimeout(() => notebook.classList.add('fadeout'), 8300);
+  setTimeout(() => { phoneWrap.style.opacity = 1; phoneWrap.classList.add('pop-in'); }, 8600);
 
-  ['r1','r2','r3','r4','r5'].forEach((id, i) => {
-    setTimeout(() => document.getElementById(id).classList.add('drop'), 200 + i * 220);
-  });
-  setTimeout(() => document.getElementById('calc').classList.add('show'), 3300);
-  setTimeout(() => notebook.classList.add('fadeout'), 5500);
-  setTimeout(() => { phoneWrap.style.opacity = 1; phoneWrap.classList.add('pop-in'); }, 5800);
-
-  countUp(document.getElementById('total'), 0, 3940, 6000, 1600, (n) => Math.round(n).toLocaleString('en-US'));
-  countUp(document.getElementById('txnCount'), 0, 32, 6000, 1600, (n) => Math.round(n) + ' transactions');
-
+  caption(cap, 'STOCKAZ ADDS IT UP THE MOMENT YOU SELL', 8900, 12500);
+  countUp(document.getElementById('repTotal'), 0, 4820, 9200, 1400, (n) => 'K' + Math.round(n).toLocaleString('en-US'));
+  setTimeout(() => document.getElementById('repSub').textContent = '63 transactions · avg K76', 10500);
   setTimeout(() => {
-    document.getElementById('b1').style.height = '88px';
-    document.getElementById('b2').style.height = '66px';
-    document.getElementById('b3').style.height = '58px';
-    document.getElementById('b4').style.height = '40px';
-    document.getElementById('b5').style.height = '28px';
-  }, 8200);
+    [[0.5],[0.62],[0.44],[0.71],[0.86],[0.93],[1]].forEach((f, i) => {
+      document.getElementById('b'+i).style.height = Math.round(14 + 46 * f[0]) + 'px';
+    });
+  }, 9400);
 
+  caption(cap, "TODAY'S TOTAL, SPLIT BY HOW THEY PAID", 12700, 16500);
   setTimeout(() => {
-    document.getElementById('chipToday').classList.remove('active');
-    document.getElementById('chipWeek').classList.add('active');
-    document.getElementById('b1').style.height = '70px';
-    document.getElementById('b2').style.height = '84px';
-    document.getElementById('b3').style.height = '46px';
-    document.getElementById('b4').style.height = '60px';
-    document.getElementById('b5').style.height = '36px';
-  }, 12400);
+    document.getElementById('splitCashAmt').textContent = 'K2,340';
+    document.getElementById('splitMobileAmt').textContent = 'K2,480';
+    document.getElementById('splitCashBar').style.width = '48%';
+    document.getElementById('splitMobileBar').style.width = '52%';
+  }, 13000);
 
+  caption(cap, 'AND YOUR BEST SELLERS, RANKED', 16700, 20500);
+
+  caption(cap, 'ZOOM OUT — SAME SCREEN, A WIDER WINDOW', 20700, 25000);
   setTimeout(() => {
-    document.getElementById('chipWeek').classList.remove('active');
-    document.getElementById('chipMonth').classList.add('active');
-    document.getElementById('b1').style.height = '90px';
-    document.getElementById('b2').style.height = '60px';
-    document.getElementById('b3').style.height = '72px';
-    document.getElementById('b4').style.height = '50px';
-    document.getElementById('b5').style.height = '44px';
-  }, 13400);
+    document.getElementById('segToday').classList.remove('active');
+    document.getElementById('segWeek').classList.add('active');
+    document.getElementById('repLabel').textContent = 'Sales · Week';
+    countUp(document.getElementById('repTotal'), 4820, 28640, 0, 1200, (n) => 'K' + Math.round(n).toLocaleString('en-US'));
+    document.getElementById('repSub').textContent = '412 transactions · avg K70';
+    [[0.78],[0.62],[0.9],[1],[0.4],[0.55],[0.68]].forEach((f, i) => {
+      document.getElementById('b'+i).style.height = Math.round(14 + 46 * f[0]) + 'px';
+      document.getElementById('b'+i).classList.toggle('hi', i === 3);
+    });
+    document.getElementById('splitCashAmt').textContent = 'K13,100';
+    document.getElementById('splitMobileAmt').textContent = 'K14,340';
+    document.getElementById('splitCashBar').style.width = '45%';
+    document.getElementById('splitMobileBar').style.width = '50%';
+    document.getElementById('splitCreditRow').style.display = 'block';
+    document.getElementById('splitCreditAmt').textContent = 'K1,200';
+    document.getElementById('splitCreditBar').style.width = '4%';
+    document.getElementById('bs1units').textContent = '188 sold'; document.getElementById('bs1rev').textContent = 'K4,700';
+    document.getElementById('bs2units').textContent = '96 sold'; document.getElementById('bs2rev').textContent = 'K1,920';
+    document.getElementById('bs3units').textContent = '61 sold'; document.getElementById('bs3rev').textContent = 'K2,318';
+  }, 21300);
 
-  setTimeout(() => outro.classList.add('show'), 14500);
+  // ---- Receipts ----
+  caption(cap, "EVERY SALE, AS A RECEIPT YOU CAN FIND", 25200, 29500);
+  navTo(panelReports, panelReceipts, 25600);
+  setTimeout(() => {
+    const el = document.getElementById('rcptThird');
+    el.style.transition = 'opacity .4s ease, transform .4s ease';
+    el.style.opacity = '1';
+    el.style.transform = 'translateY(0)';
+  }, 27200);
+
+  caption(cap, 'FILTER BY TODAY, THIS WEEK, THIS MONTH', 29700, 33500);
+  setTimeout(() => {
+    document.getElementById('rsegToday').classList.remove('active');
+    document.getElementById('rsegWeek').classList.add('active');
+  }, 31400);
+
+  // ---- Monitor ----
+  caption(cap, "SEE YOUR WHOLE SHOP — LIVE", 33700, 38000);
+  navTo(panelReceipts, panelMonitor, 34100);
+  countUp(document.getElementById('monTotal'), 0, 4820, 34600, 1200, (n) => 'K' + Math.round(n).toLocaleString('en-US'));
+  countUp(document.getElementById('monTxns'), 0, 63, 34700, 1000);
+  setTimeout(() => { document.getElementById('monCash').textContent = 'K2,340'; document.getElementById('monMobile').textContent = 'K2,480'; }, 35700);
+
+  caption(cap, "WHO'S WORKING, AND WHAT THEY'VE SOLD", 38200, 43000);
+
+  caption(cap, 'YOUR SHOP, IN YOUR POCKET — ANY TIME OF DAY', 43200, 47500);
+
+  setTimeout(() => outro.classList.add('show'), 47700);
+  caption(cap, 'STOCKAZ', 48000, 52500);
 </script>
 </body>
 </html>

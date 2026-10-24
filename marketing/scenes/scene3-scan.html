@@ -18,56 +18,72 @@
   .mag.sweep { animation: sweep 2.6s ease-in-out forwards; }
   @keyframes sweep { from { left:10%; } to { left:72%; } }
 
-  .cam-frame { position:absolute; inset: 70px 26px 70px 26px; z-index:30; opacity:0; }
-  .cam-frame.show { animation: fadeIn .35s ease forwards; }
-  .corner { position:absolute; width:34px; height:34px; border: 4px solid #fff; }
+  .cam-overlay { position:absolute; inset:0; z-index:70; opacity:0; pointer-events:none; }
+  .cam-overlay.show { opacity:1; }
+  .dark-cam { position:absolute; inset:0; background: rgba(10,8,5,.86); }
+  .cam-frame { position:absolute; inset: 56px 24px 56px 24px; }
+  .corner { position:absolute; width:32px; height:32px; border: 4px solid #fff; }
   .c1 { top:0; left:0; border-right:none; border-bottom:none; border-radius: 8px 0 0 0; }
   .c2 { top:0; right:0; border-left:none; border-bottom:none; border-radius: 0 8px 0 0; }
   .c3 { bottom:0; left:0; border-right:none; border-top:none; border-radius: 0 0 0 8px; }
   .c4 { bottom:0; right:0; border-left:none; border-top:none; border-radius: 0 0 8px 0; }
   .corner.found { border-color: #8CE08A; }
+  .corner.miss { border-color: #FF6B66; }
   .scanline { position:absolute; left:0; right:0; height:3px; background: #8CE08A; box-shadow: 0 0 14px #8CE08A; top:0; }
-  .scanline.go { animation: scango 1.1s linear infinite; }
+  .scanline.go { animation: scango 1.05s linear infinite; }
   @keyframes scango { 0% { top:0; } 100% { top:100%; } }
-
-  .dark-cam { position:absolute; inset:0; background: rgba(10,8,5,.78); z-index:20; opacity:0; }
-  .dark-cam.show { animation: fadeIn .35s ease forwards; }
 
   .barcode-tin {
     position:absolute; left:50%; top:46%; transform: translate(-50%,-50%);
-    width: 150px; height: 190px; background: var(--product-mat); border-radius: 14px; z-index: 25;
+    width: 140px; height: 176px; background: var(--product-mat); border-radius: 14px;
     display:flex; align-items:center; justify-content:center; padding: 10px; opacity:0;
   }
   .barcode-tin.show { animation: fadeIn .3s ease forwards; }
-  .barcode-tin img { max-width: 100%; max-height: 74%; object-fit: contain; }
-  .barbars { display:flex; gap:2px; margin-top:8px; }
+  .barcode-tin img { max-width: 100%; max-height: 72%; object-fit: contain; }
+  .barbars { display:flex; gap:2px; margin-top:7px; }
   .barbars div { width:3px; background:#1B1610; }
+  .scan-code-label { font-family:monospace; font-size:11px; font-weight:700; color:var(--faint); margin-top:6px; }
 
   .checkmark {
-    position:absolute; left:50%; top:30%; transform: translate(-50%,-50%) scale(0);
-    width:56px; height:56px; border-radius:999px; background:#2FA86B; z-index:40;
+    position:absolute; left:50%; top:26%; transform: translate(-50%,-50%) scale(0);
+    width:50px; height:50px; border-radius:999px; background:#2FA86B; z-index:40;
     display:flex; align-items:center; justify-content:center;
   }
   .checkmark.pop { animation: popIn .35s cubic-bezier(.3,1.5,.4,1) forwards; }
-
-  .result-card {
-    position:absolute; left:14px; right:14px; bottom:18px; z-index: 50;
-    background: var(--card); border-radius: 22px; padding: 16px; box-shadow: var(--shadow-card);
-    display:flex; align-items:center; gap:12px; transform: translateY(140%); transition: transform .4s cubic-bezier(.2,.9,.2,1);
-  }
-  .result-card.up { transform: translateY(0); }
-  .result-card img { width:50px; height:50px; border-radius:12px; object-fit:contain; background:var(--product-mat); flex:none; }
-  .btnrow { display:flex; gap:8px; margin-top:10px; }
-  .btn { flex:1; text-align:center; font-weight:800; font-size:12.5px; padding:11px; border-radius:12px; }
-  .btn.sell { background: linear-gradient(150deg,#A08256,#7A5F3C); color:#fff; }
-  .btn.restock { background: var(--accent-soft); color: var(--accent-dark); }
-  .btn.tap { animation: popIn .25s ease; }
-  .toast-check {
-    position:absolute; top:38%; left:50%; transform: translate(-50%,-50%) scale(0);
-    width:64px; height:64px; border-radius:999px; background:#2FA86B; z-index:70;
+  .xmark {
+    position:absolute; left:50%; top:26%; transform: translate(-50%,-50%) scale(0);
+    width:50px; height:50px; border-radius:999px; background:#E5484D; z-index:40;
     display:flex; align-items:center; justify-content:center;
   }
-  .toast-check.pop { animation: popIn .35s cubic-bezier(.3,1.5,.4,1) forwards; }
+  .xmark.pop { animation: popIn .35s cubic-bezier(.3,1.5,.4,1) forwards; }
+
+  .result-card {
+    position:absolute; left:14px; right:14px; bottom:16px; z-index: 75;
+    background: var(--card); border-radius: 20px; padding: 15px; box-shadow: var(--shadow-card);
+    display:flex; align-items:center; gap:11px; transform: translateY(140%); transition: transform .4s cubic-bezier(.2,.9,.2,1);
+  }
+  .result-card.up { transform: translateY(0); }
+  .result-card img { width:46px; height:46px; border-radius:12px; object-fit:contain; background:var(--product-mat); flex:none; }
+  .btnrow { display:flex; gap:7px; margin-top:9px; }
+  .btn-sm { flex:1; text-align:center; font-weight:800; font-size:11.5px; padding:10px; border-radius:11px; }
+  .btn-sm.sell { background: linear-gradient(150deg,#A08256,#7A5F3C); color:#fff; }
+  .btn-sm.restock { background: var(--accent-soft); color: var(--accent-dark); }
+  .btn-sm.add { background: linear-gradient(150deg,#A08256,#7A5F3C); color:#fff; }
+
+  .cart-stepper { display:flex; align-items:center; gap:3px; padding:3px; border-radius:12px; background: var(--hairline); }
+  .cart-stepper .sb { width:24px; height:24px; border-radius:9px; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:13px; background:rgba(255,255,255,.95); color:var(--ink); }
+  .cart-stepper .sb.plus { background:#7A5F3C; color:#fff; }
+  .ptile { border-radius:13px; background:rgba(255,255,255,.99); border:1px solid rgba(255,255,255,.95); box-shadow:var(--shadow-card); padding:7px; text-align:center; }
+  .ptile img { width:30px; height:30px; object-fit:contain; margin:0 auto; display:block; }
+  .ptile .pn { font-size:8.5px; font-weight:800; color:var(--ink); margin-top:4px; }
+  .ptile .pp { font-size:8px; font-weight:700; color:var(--accent); }
+  .summary-bar { position:absolute; left:10px; right:10px; bottom:10px; border-radius:18px; background:rgba(255,255,255,.98); box-shadow:var(--shadow-card); padding:13px; z-index:20; }
+  .sumrow { display:flex; align-items:center; gap:9px; margin-bottom:7px; }
+  .sumrow .sl2 { width:68px; font-size:10.5px; font-weight:700; color:var(--sub); }
+  .sumval { flex:1; height:34px; border-radius:10px; background:rgba(149,119,80,.1); border:1px solid var(--accent-border); display:flex; align-items:center; padding:0 11px; font-size:15px; font-weight:800; color:var(--ink); }
+  .sumval.ghost { background: rgba(27,22,16,.04); border-color:var(--hairline); color:var(--faint); font-size:12px; font-weight:700; }
+  .toast { position:absolute; left:50%; bottom:14px; transform:translate(-50%,10px); opacity:0; background:rgba(16,12,7,.9); color:#fff; font-size:11.5px; font-weight:800; padding:10px 16px; border-radius:12px; z-index:90; white-space:nowrap; }
+  .toast.show { animation: capIn .3s ease-out forwards; }
 </style>
 </head>
 <body>
@@ -81,56 +97,123 @@
       <div class="mag" id="mag"></div>
     </div>
     <div class="notebook-page" id="pageView" style="display:none; position:relative;">
-      <div class="handwrite">Peri Peri .......... <span style="color:var(--danger-ink);">???</span></div>
+      <div class="handwrite">Heinz Beans ........ <span style="color:var(--danger-ink);">???</span></div>
     </div>
   </div>
 
   <div class="phone-stage">
-  <div class="phone-wrap" id="phoneWrap" style="opacity:0;">
-    <div class="phone">
-      <div class="notch"></div>
-      <div class="phone-screen" style="position:relative; background:#15120D;">
+   <div class="phone-bob">
+    <div class="phone-wrap" id="phoneWrap" style="opacity:0;">
+      <div class="phone">
+        <div class="notch"></div>
+        <div class="phone-screen" id="phoneScreen">
 
-        <div class="dark-cam" id="darkCam"></div>
-        <div class="cam-frame" id="camFrame">
-          <div class="corner c1" id="cn1"></div><div class="corner c2" id="cn2"></div>
-          <div class="corner c3" id="cn3"></div><div class="corner c4" id="cn4"></div>
-          <div class="scanline go" id="scanline"></div>
-        </div>
-
-        <div class="barcode-tin" id="tin">
-          <div style="display:flex; flex-direction:column; align-items:center;">
-            <img src="../../assets/products/heinz-beans.png" />
-            <div class="barbars">
-              <div style="height:22px;"></div><div style="height:16px;"></div><div style="height:22px;"></div>
-              <div style="height:12px;"></div><div style="height:22px;"></div><div style="height:16px;"></div>
-              <div style="height:22px;"></div><div style="height:12px;"></div><div style="height:22px;"></div>
+          <!-- PANEL: entry (Sale search row) -->
+          <div class="screen-panel enter" id="panelEntry">
+            <div class="app-header" style="padding-bottom:10px;">
+              <div><div class="app-title" style="font-size:19px;">New Sale</div></div>
+            </div>
+            <div class="panel-scroll">
+              <div style="display:flex; gap:8px; flex:none;">
+                <div class="glass-card" style="flex:1; height:42px; display:flex; align-items:center; padding:0 13px; box-shadow:none; border:1px solid var(--hairline);"><span style="font-size:12.5px; font-weight:600; color:var(--faint);">Search products...</span></div>
+                <div id="scanIconBtn" style="width:42px; height:42px; border-radius:13px; background:rgba(255,255,255,.99); border:1px solid var(--hairline); display:flex; align-items:center; justify-content:center;">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 7V4h3M20 7V4h-3M4 17v3h3M20 17v3h-3M4 12h16" stroke="#7C6340" stroke-width="2" stroke-linecap="round"/></svg>
+                </div>
+              </div>
+              <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px; flex:none;">
+                <div class="ptile"><img src="../../assets/products/heinz-beans.png"/><div class="pn">Heinz Beans</div><div class="pp">K25.00</div></div>
+                <div class="ptile"><img src="../../assets/products/pilchards.png"/><div class="pn">Pilchards</div><div class="pp">K20.00</div></div>
+                <div class="ptile"><img src="../../assets/products/chicco-bobo.png"/><div class="pn">Chicco Bobo</div><div class="pp">K1.00</div></div>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div class="checkmark" id="check">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4 10-11" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
-
-        <div class="result-card" id="resultCard">
-          <img src="../../assets/products/heinz-beans.png" />
-          <div style="flex:1;">
-            <div style="font-size:13.5px; font-weight:800; color:var(--ink);">Heinz Beans Original 415g</div>
-            <div style="font-size:12px; font-weight:700; color:var(--accent-dot); margin-top:2px;">K25.00 · 42 left</div>
-            <div class="btnrow">
-              <div class="btn sell" id="sellBtn">Sell</div>
-              <div class="btn restock">Restock</div>
+          <!-- PANEL: Sale (cart + checkout) -->
+          <div class="screen-panel" id="panelSale">
+            <div class="app-header" style="padding-bottom:10px;">
+              <div><div class="app-title" style="font-size:19px;">New Sale</div></div>
+            </div>
+            <div class="panel-scroll" style="padding-bottom:170px;">
+              <div class="glass-card" id="cartLine" style="padding:11px 12px; display:flex; align-items:center; gap:10px; flex:none;">
+                <img src="../../assets/products/heinz-beans.png" style="width:38px;height:38px;border-radius:11px;background:var(--product-mat);object-fit:contain;"/>
+                <div style="flex:1; min-width:0;"><div style="font-size:12px; font-weight:800; color:var(--ink);">Heinz Beans Original 415g</div><div style="font-size:11px; font-weight:700; color:var(--accent); margin-top:2px;" id="cartLinePrice">K25.00</div></div>
+                <div class="cart-stepper"><div class="sb">−</div><div style="min-width:20px; text-align:center; font-size:12.5px; font-weight:800;" id="cartQty">1</div><div class="sb plus">+</div></div>
+              </div>
+              <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:9px; flex:none;">
+                <div class="ptile"><img src="../../assets/products/pilchards.png"/><div class="pn">Pilchards</div><div class="pp">K20.00</div></div>
+                <div class="ptile"><img src="../../assets/products/chicco-bobo.png"/><div class="pn">Chicco Bobo</div><div class="pp">K1.00</div></div>
+                <div class="ptile"><img src="../../assets/products/movit-jelly.png"/><div class="pn">Movit Jelly</div><div class="pp">K45.00</div></div>
+              </div>
+            </div>
+            <div class="summary-bar">
+              <div class="sumrow"><span class="sl2">Total cost</span><div class="sumval" id="sumTotal">K25.00</div></div>
+              <div class="sumrow"><span class="sl2">Amount paid</span><div class="sumval ghost" id="sumPaid">Tap to enter</div></div>
+              <div class="sumrow"><span class="sl2">Change</span><div class="sumval ghost" id="sumChange">—</div></div>
+              <div class="btn-primary" id="sellBtn" style="text-align:center;">Sell</div>
             </div>
           </div>
-        </div>
 
-        <div class="toast-check" id="toastCheck">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4 10-11" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <!-- Camera overlay (used twice: match + no-match) -->
+          <div class="cam-overlay" id="camOverlay">
+            <div class="dark-cam"></div>
+            <div class="cam-frame" id="camFrame">
+              <div class="corner c1" id="cn1"></div><div class="corner c2" id="cn2"></div>
+              <div class="corner c3" id="cn3"></div><div class="corner c4" id="cn4"></div>
+              <div class="scanline go" id="scanline"></div>
+            </div>
+            <div class="barcode-tin" id="tin">
+              <div style="display:flex; flex-direction:column; align-items:center;">
+                <img id="tinImg" src="../../assets/products/heinz-beans.png" />
+                <div class="barbars" id="tinBars">
+                  <div style="height:20px;"></div><div style="height:14px;"></div><div style="height:20px;"></div>
+                  <div style="height:10px;"></div><div style="height:20px;"></div><div style="height:14px;"></div>
+                  <div style="height:20px;"></div><div style="height:10px;"></div><div style="height:20px;"></div>
+                </div>
+                <div class="scan-code-label" id="tinCode" style="display:none;"></div>
+              </div>
+            </div>
+            <div class="checkmark" id="check"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4 10-11" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <div class="xmark" id="xmark"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="#fff" stroke-width="3.2" stroke-linecap="round"/></svg></div>
+
+            <div class="result-card" id="foundCard">
+              <img src="../../assets/products/heinz-beans.png" />
+              <div style="flex:1;">
+                <div style="font-size:12.5px; font-weight:800; color:var(--ink);">Heinz Beans Original 415g</div>
+                <div style="font-size:11px; font-weight:700; color:var(--accent-dot); margin-top:2px;">K25.00 · 42 left</div>
+                <div class="btnrow"><div class="btn-sm sell" id="sellFromScan">Sell</div><div class="btn-sm restock">Restock</div></div>
+              </div>
+            </div>
+            <div class="result-card" id="notFoundCard">
+              <div style="width:46px; height:46px; border-radius:12px; background:var(--danger-bg); display:flex; align-items:center; justify-content:center; flex:none;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 8v5M12 16h.01M4 7V4h3M20 7V4h-3M4 17v3h3M20 17v3h-3" stroke="#C0332F" stroke-width="2" stroke-linecap="round"/></svg>
+              </div>
+              <div style="flex:1;">
+                <div style="font-size:12.5px; font-weight:800; color:var(--ink);">Barcode not in your stock yet</div>
+                <div style="font-size:10.5px; font-weight:600; color:var(--faint); margin-top:2px; font-family:monospace;" id="notFoundCode">2001234567897</div>
+                <div class="btnrow"><div class="btn-sm add" id="addFromScan">Add product</div></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Add product (from unrecognized scan) -->
+          <div class="sheet-backdrop" id="addBackdrop"></div>
+          <div class="sheet" id="addSheet">
+            <div class="sheet-handle"></div>
+            <div style="font-size:15px; font-weight:800; color:var(--ink); margin-bottom:12px;">New Product</div>
+            <div class="field"><div class="fl">Product name</div><div class="fi" id="fName">&nbsp;</div></div>
+            <div style="display:flex; gap:10px;">
+              <div class="field" style="flex:1;"><div class="fl">Selling price</div><div class="fi" id="fPrice">&nbsp;</div></div>
+              <div class="field" style="flex:1;"><div class="fl">Opening stock</div><div class="fi" id="fQty">&nbsp;</div></div>
+            </div>
+            <div class="field"><div class="fl">Barcode</div><div class="fi" id="fBarcode" style="color:var(--accent-dark); font-family:monospace;">&nbsp;</div></div>
+            <div class="btn-primary" id="saveBtn" style="text-align:center;">Save Product</div>
+          </div>
+
+          <div class="toast" id="toast"></div>
         </div>
       </div>
     </div>
-  </div>
+   </div>
   </div>
 
   <div class="outro" id="outro">
@@ -148,44 +231,104 @@
   const notebook = document.getElementById('notebook');
   const phoneWrap = document.getElementById('phoneWrap');
   const outro = document.getElementById('outro');
+  const panelEntry = document.getElementById('panelEntry');
+  const panelSale = document.getElementById('panelSale');
+  const camOverlay = document.getElementById('camOverlay');
 
-  caption(cap, "GUESSING WHAT'S STILL IN STOCK?", 300, 3000);
-  caption(cap, "BY THE TIME YOU CHECK, THEY'RE GONE", 3200, 5500);
-  caption(cap, 'STOCKAZ SCANS THE BARCODE', 5700, 7500);
-  caption(cap, "POINT. SCAN. KNOW WHAT YOU'VE GOT", 7700, 12000);
-  caption(cap, 'SELL OR RESTOCK — RIGHT THERE', 12200, 14000);
-  caption(cap, 'STOCKAZ', 14300, 16000);
+  caption(cap, "GUESSING WHAT'S STILL IN STOCK?", 300, 4300);
+  caption(cap, "BY THE TIME YOU CHECK THE BOOK, THEY'RE GONE", 4500, 8300);
+  setTimeout(() => document.getElementById('mag').classList.add('sweep'), 300);
+  setTimeout(() => { document.getElementById('shelfView').style.display = 'none'; document.getElementById('pageView').style.display = 'block'; }, 3300);
+  setTimeout(() => notebook.classList.add('fadeout'), 8300);
+  setTimeout(() => { phoneWrap.style.opacity = 1; phoneWrap.classList.add('pop-in'); }, 8600);
 
-  setTimeout(() => document.getElementById('mag').classList.add('sweep'), 200);
-  setTimeout(() => {
-    document.getElementById('shelfView').style.display = 'none';
-    document.getElementById('pageView').style.display = 'block';
-  }, 3100);
-  setTimeout(() => notebook.classList.add('fadeout'), 5500);
-  setTimeout(() => { phoneWrap.style.opacity = 1; phoneWrap.classList.add('pop-in'); }, 5800);
+  caption(cap, 'STOCKAZ SCANS THE BARCODE INSTEAD', 8900, 12000);
+  setTimeout(() => document.getElementById('scanIconBtn').classList.add('tap-fx'), 11200);
 
-  setTimeout(() => document.getElementById('darkCam').classList.add('show'), 6000);
-  setTimeout(() => document.getElementById('camFrame').classList.add('show'), 6200);
-  setTimeout(() => document.getElementById('tin').classList.add('show'), 8200);
-
+  // ---- first scan: match ----
+  setTimeout(() => camOverlay.classList.add('show'), 11600);
+  caption(cap, 'POINT. SCAN. KNOW EXACTLY WHAT YOU HAVE', 12200, 17000);
+  setTimeout(() => document.getElementById('tin').classList.add('show'), 13800);
   setTimeout(() => {
     document.getElementById('scanline').classList.remove('go');
     ['cn1','cn2','cn3','cn4'].forEach((id) => document.getElementById(id).classList.add('found'));
     document.getElementById('check').classList.add('pop');
-  }, 9800);
+  }, 15600);
+  setTimeout(() => document.getElementById('foundCard').classList.add('up'), 16300);
 
+  caption(cap, 'PRICE, STOCK ON HAND — ALL THERE', 17200, 19800);
+  setTimeout(() => document.getElementById('sellFromScan').classList.add('tap-fx'), 19200);
+  setTimeout(() => camOverlay.classList.remove('show'), 19600);
+  navTo(panelEntry, panelSale, 19600);
+
+  caption(cap, "IT'S ALREADY IN YOUR CART", 20000, 23500);
+  caption(cap, 'ENTER WHAT THEY PAID — CHANGE IS AUTOMATIC', 23700, 28000);
   setTimeout(() => {
-    document.getElementById('resultCard').classList.add('up');
-  }, 10400);
-
+    document.getElementById('sumPaid').classList.remove('ghost');
+    document.getElementById('sumPaid').textContent = 'K50.00';
+  }, 25200);
   setTimeout(() => {
-    const btn = document.getElementById('sellBtn');
-    btn.classList.add('tap');
-    document.getElementById('check').style.opacity = '0';
-    document.getElementById('toastCheck').classList.add('pop');
-  }, 12800);
+    document.getElementById('sumChange').classList.remove('ghost');
+    document.getElementById('sumChange').textContent = 'K25.00';
+  }, 26000);
+  setTimeout(() => document.getElementById('sellBtn').classList.add('tap-fx'), 27400);
+  setTimeout(() => {
+    const t = document.getElementById('toast');
+    t.textContent = 'Sale complete — K25.00';
+    t.classList.add('show');
+  }, 27700);
 
-  setTimeout(() => outro.classList.add('show'), 14500);
+  // ---- reset to entry panel for second scan ----
+  caption(cap, 'SCAN SOMETHING NEW? JUST AS FAST', 29000, 33000);
+  navTo(panelSale, panelEntry, 29400);
+  setTimeout(() => {
+    document.getElementById('toast').classList.remove('show');
+    document.getElementById('tin').classList.remove('show');
+    document.getElementById('foundCard').classList.remove('up');
+    document.getElementById('check').classList.remove('pop');
+    ['cn1','cn2','cn3','cn4'].forEach((id) => document.getElementById(id).classList.remove('found'));
+    document.getElementById('scanline').classList.add('go');
+    document.getElementById('tinImg').src = '';
+    document.getElementById('tinBars').style.display = 'none';
+    document.getElementById('tinCode').style.display = 'block';
+    document.getElementById('tinCode').textContent = '2001234567897';
+    document.getElementById('tin').style.background = '#fff';
+  }, 29600);
+  setTimeout(() => document.getElementById('scanIconBtn').classList.add('tap-fx'), 30800);
+  setTimeout(() => camOverlay.classList.add('show'), 31200);
+  setTimeout(() => document.getElementById('tin').classList.add('show'), 32400);
+
+  caption(cap, "NOT IN YOUR STOCK YET? ADD IT ON THE SPOT", 33200, 37500);
+  setTimeout(() => {
+    document.getElementById('scanline').classList.remove('go');
+    ['cn1','cn2','cn3','cn4'].forEach((id) => document.getElementById(id).classList.add('miss'));
+    document.getElementById('xmark').classList.add('pop');
+  }, 34200);
+  setTimeout(() => document.getElementById('notFoundCard').classList.add('up'), 35000);
+  setTimeout(() => document.getElementById('addFromScan').classList.add('tap-fx'), 37000);
+  setTimeout(() => camOverlay.classList.remove('show'), 37400);
+
+  caption(cap, "THE BARCODE'S ALREADY FILLED IN", 37600, 42000);
+  sheetSet(document.getElementById('addSheet'), document.getElementById('addBackdrop'), true, 37700);
+  setTimeout(() => { document.getElementById('fBarcode').textContent = '2001234567897'; }, 38000);
+  typeInto(document.getElementById('fName'), 'Trust Candles 6pk', 38500, 55);
+  setTimeout(() => document.getElementById('fName').classList.add('focus'), 38450);
+  typeInto(document.getElementById('fPrice'), 'K18', 39900, 140);
+  typeInto(document.getElementById('fQty'), '30', 40600, 160);
+
+  caption(cap, "SAVE — AND IT'S PART OF YOUR STOCK", 42200, 46500);
+  setTimeout(() => document.getElementById('saveBtn').classList.add('tap-fx'), 43400);
+  sheetSet(document.getElementById('addSheet'), document.getElementById('addBackdrop'), false, 43700);
+  setTimeout(() => {
+    const t = document.getElementById('toast');
+    t.textContent = 'Trust Candles 6pk added to Stock';
+    t.classList.add('show');
+  }, 44000);
+
+  caption(cap, 'SCAN TO SELL. SCAN TO ADD. NEVER GUESS.', 46700, 50500);
+
+  setTimeout(() => outro.classList.add('show'), 50700);
+  caption(cap, 'STOCKAZ', 51000, 55500);
 </script>
 </body>
 </html>
